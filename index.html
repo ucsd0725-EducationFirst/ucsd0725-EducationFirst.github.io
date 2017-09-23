@@ -329,7 +329,7 @@
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
-	<script src="assets/js/college_scoreboard/scoreboard_api.js" charset="utf-8"></script>
+	<script src="assets/js/college_scorecard/scorecard_api.js" charset="utf-8"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -342,7 +342,7 @@
 				var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; })
 				var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
 				ordered.forEach(function(x) {
-					console.log(x.school.salary.eventual);
+					console.log(x);
 				})
 			});
 		  });
