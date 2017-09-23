@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>Testing Chat Controller</title>
+		<style media="screen">
+			#chatbox { width: 400px; display: block; height: 300px; }
+			.bubble { border: 1px solid black; border-radius: 10px; padding: 5px; }
+			.bubble.bot { margin: 10px 50px 0 10px; }
+			.bubble.user { margin: 10px 10px 0 50px; }
+		</style>
+	</head>
+	<body>
+		<div id="chatbox"></div>
+		<br>
+		<hr>
+		<form id="inputForm">
+			<input type="text" id="userInput">
+			<button type="submit" id="submit">Submit</button>
+		</form>
+
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="assets/js/chat_controller.js" charset="utf-8"></script>
+	<script type="text/javascript">
+		var cc = new ChatController();
+		var chatbox = $("#chatbox");
+
+		function DisplayChatbotPrompt() {
+			var prompt = cc.GetNextPrompt();
+			prompt.forEach(function(p) {
+				var bubble = $("<div class='bubble bot'>");
+				bubble.html(p);
+				chatbox.append(bubble);
+			});
+		}
+
+		$("#submit").click(function(e) {
+			e.preventDefault();
+			// Get and Reset Input
+			var input = $("#userInput").val();
+			var bubble = $("<div class='bubble user'>");
+			bubble.html(input);
+			chatbox.append(bubble);
+			$("#inputForm")[0].reset();
+			// Query wit.ai
+			// TODO
+			// Send to Chat Controller
+		});
+
+		$(document).ready(function() {
+			DisplayChatbotPrompt();
+		});
+	</script>
+	</body>
+</html>
