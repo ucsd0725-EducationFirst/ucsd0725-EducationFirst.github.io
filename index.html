@@ -70,12 +70,12 @@
 	}
 
 	#university-box{
-		display: inline-grid;
+
 	}
 
 	.uni-card{
 		display: inline-flex;
-		width: 40%;
+		width: 45%;
 	}
 
 </style>
@@ -276,7 +276,7 @@
 					console.log(x);
 					console.log(x.school.name)
 				})
-				console.log(ordered);
+				console.log(ordered[2].school.location);
 				// Math.min if less than 6 objects return
 
 				for(var i=0; i<3;i++) {
@@ -289,7 +289,8 @@
 
 					var name = $("<span>");
 					name.addClass("card-title activator school-name");
-					// name.attr("id", "school-name");
+
+					var location = $("<p>");
 
 					var di = $("<div>");
 					di.addClass("divider");
@@ -302,10 +303,17 @@
 					revealContent.addClass("card-title");
 					revealContent.html("Information");
 
+					   var schoolSize = $("<p>");
+					   schoolSize.html(ordered[i].school.demographics.size);
+
 
 					name.html(ordered[i].school.name);
+					location.html(ordered[i].school.location.city + ", " + ordered[i].school.location.state);
 
 					cContent.append(name);
+					cContent.append(di);
+					cContent.append(location);
+					revealContent.append(schoolSize);
 					cReveal.append(revealContent);
 					cReveal.append(di);
 					card.append(cContent);
