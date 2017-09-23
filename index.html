@@ -10,7 +10,7 @@
 	.chatBox{
 		position: relative;
 		width: 100%;
-		   height: 75%;
+		height: 60%;
 		overflow-y: scroll;
 		padding-right: 15px;
 		padding-left:15px;
@@ -30,7 +30,7 @@
 	}
 
 	.chatbox-box{
-		height: 40%;
+		height: 60%;
 		width: 100%;
 		overflow: hidden;
 	}
@@ -69,6 +69,14 @@
 		display: inline;
 	}
 
+	#university-box{
+		display: inline-grid;
+	}
+
+	.uni-card{
+		display: inline-flex;
+		width: 40%;
+	}
 
 </style>
 </head>
@@ -158,91 +166,10 @@
 
 				   </footer>
 
-			</div>
 
-			<div class="col s8">
+					<!-- <div class="jobs-box">
 
-				<div class="row">
-					<div class="col s6">
-
-						<div class="card blue-grey darken-1">
-
-							<div class="card-content white-text">
-								<span class="card-title">University</span>
-
-								<div class="divider"></div>
-								<p>Data data data</p>
-							</div>
-						</div>
-
-					</div>
-
-					<div class="col s6">
-
-						<div class="card blue-grey darken-1">
-
-							<div class="card-content white-text">
-								<span class="card-title">University 1</span>
-
-								<div class="divider"></div>
-								<p>Data data data</p>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-				<div class="row">
-					<div class="col s6">
-
-						<div class="card blue-grey darken-1">
-
-							<div class="card-content white-text">
-								<span class="card-title">University</span>
-
-								<div class="divider"></div>
-								<p>
-									Data data data<br>
-									Data data data
-								</p>
-							</div>
-						</div>
-
-					</div>
-
-					<div class="col s6">
-
-						<div class="card blue-grey darken-1">
-
-							<div class="card-content white-text">
-
-								<span class="card-title">University</span>
-
-								<div class="divider"></div>
-								<p>Data data data</p>
-							</div>
-						</div>
-
-					</div>
-				</div>
-
-
-			</div>
-		</div>
-
-
-		<!-- Display Divs -->
-		<div class="">
-
-			<div class="row" style="margin-left: 0px; margin-right: 0px;" >
-
-				<div class="col s6 blue z-depth-3">
-
-					<h5>Jobs</h5>
-
-					<div class="box">
-
-						<ul class="collapsible" data-collapsible="accordion">
+						<ul class="collapsible jobs-box" data-collapsible="accordion">
 							<li>
 							   <div class="collapsible-header"><i class="material-icons">airplanemode_active</i>Pilot</div>
 							   <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
@@ -256,25 +183,33 @@
 							   <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
 							</li>
 						  </ul>
+					</div> -->
+
+			</div>
+
+			<div class="col s8">
+
+					<div id="university-box">
+
+						 <div class="card uni-card">
+					        
+					        <div class="card-content">
+					        	<span class="card-title activator">University</span>
+
+								<div class="divider"></div>
+								<p>Data data data</p>
+							</div>
+
+							<div class="card-reveal">
+						        <span class="card-title text-darken-4">Card Title<i class="material-icons right">close</i></span>
+			      			    <p>Here is some more information about this product that is only revealed once clicked on.</p>
+  							</div>
+   						 </div>
+
 					</div>
 
-				</div>
-
-				<div class="col s1">
-
-				</div>
-
-
-				<div class="col s5 blue z-depth-3">
-					<h5>thing</h5>
-
-					<div class="box">
-						<p>Thing</p>
-					</div>
-				</div>
 			</div>
 		</div>
-
 
 		<!-- Modals -->
 		<div>
@@ -339,7 +274,46 @@
 				var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
 				ordered.forEach(function(x) {
 					console.log(x);
+					console.log(x.school.name)
 				})
+				console.log(ordered);
+				// Math.min if less than 6 objects return
+
+				for(var i=0; i<3;i++) {
+
+					var card = $("<div>");
+					card.addClass("card uni-card");
+
+					var cContent = $("<div>");
+					cContent.addClass("card-content");
+
+					var name = $("<span>");
+					name.addClass("card-title activator school-name");
+					// name.attr("id", "school-name");
+
+					var di = $("<div>");
+					di.addClass("divider");
+
+					
+					var cReveal = $("<div>");
+					cReveal.addClass("card-reveal");
+
+					var revealContent =  $("<span>");
+					revealContent.addClass("card-title");
+					revealContent.html("Information");
+
+
+					name.html(ordered[i].school.name);
+
+					cContent.append(name);
+					cReveal.append(revealContent);
+					cReveal.append(di);
+					card.append(cContent);
+					card.append(cReveal);
+					$("#university-box").append(card);
+
+				}
+				
 			});
 		  });
 	</script>
