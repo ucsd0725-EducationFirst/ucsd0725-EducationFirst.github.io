@@ -27,7 +27,11 @@ var ChatController = function(chatbot, scorecard) {
 				prompt: ["OK. Do you know what you want to study?"],
 				what: {
 					dynamic: function() {
-						return ["Great! Here are some of the top schools in " + self.context["where"] + " that offer " + self.context["what"]];
+						if (self.context["where"] !== undefined) {
+							return ["Great! Here are some of the top schools in " + self.context["where"] + " that offer " + self.context["what"]];
+						} else {
+							return ["OK. Here are some of the top schools that offer degrees in " + self.context["what"]];
+						}
 					}
 				},
 				dunno: {
@@ -64,23 +68,32 @@ var ChatController = function(chatbot, scorecard) {
 			case "root":
 				if (intents === "san diego") {
 					self.context["where"] = intents;
-					self.path.push("where");
+					self.currentPath.push("where");
 					self.state = "where";
 				} else {
-					self.path.push("dunno");
+					self.currentPath.push("dunno");
 					self.state = "dunno";
 				}
 				break;
 			case "dunno":
 				if (intents === "healthcare") {
 					self.context["what"] = intents;
-					self.path.push("what");
+					self.currentPath.push("what");
 					self.state = "dunno.what";
 				} else {
-					self.path.push("dunno");
+					self.currentPath.push("dunno");
 					self.state = "dunno.dunno";
 				}
 				break;
+			case "where":
+				if (intents === "healthcare") {
+					self.context["what"] = intents;
+					self.currentPath.push("what");
+					self.state = "where.what";
+				} else {
+					self.currentPath.push("dunno");
+					self.state = "where.dunno";
+				}
 			default:
 				break;
 		}

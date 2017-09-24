@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Testing Chat Controller</title>
 		<style media="screen">
-			#chatbox { width: 400px; display: block; height: 300px; }
+			#chatbox { width: 400px; display: block; height: 300px; overflow-y: scroll;}
 			.bubble { border: 1px solid black; border-radius: 10px; padding: 5px; }
 			.bubble.bot { margin: 10px 50px 0 10px; }
 			.bubble.user { margin: 10px 10px 0 50px; }
@@ -44,8 +44,10 @@
 			chatbox.append(bubble);
 			$("#inputForm")[0].reset();
 			// Query wit.ai
-			// TODO
+			// TODO get intents from input
 			// Send to Chat Controller
+			cc.Consume(input);
+			DisplayChatbotPrompt();
 		});
 
 		$(document).ready(function() {
