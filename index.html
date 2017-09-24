@@ -1,90 +1,12 @@
 <!DOCTYPE>
 <html>
 <head>
-
 	<title>wireframe</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-	   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-<style>
-	.chatBox{
-		position: relative;
-		width: 100%;
-		height: 60%;
-		overflow-y: scroll;
-		padding-right: 15px;
-		padding-left:15px;
-	}
-
-	html ::-webkit-scrollbar {
-	width: 0px;
-	background: transparent;
-
-	}
-
-	.cb-footer{
-		height: 50px;
-		width: 100%;
-		padding: 0;
-		margin-top: 0;
-	}
-
-	.chatbox-box{
-		height: 60%;
-		width: 100%;
-		overflow: hidden;
-	}
-
-	.cb-send{
-		padding: 2px;
-		height: 65%;
-		margin-top: auto;
-		margin-bottom: auto;
-		float: right;
-	}
-
-	.card-panel{
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 12px;
-		padding-right: 8px;
-		margin-bottom: 1px;
-	}
-
-	.head{
-		width: 40%;
-		margin-right: auto;
-		margin-left: auto;
-	}
-
-	.main-container{
-		width: 90%;
-		height: 100%;
-	}
-
-	.text-input{
-		width: 50%;
-		margin-left: auto;
-		margin-right: auto;
-		display: inline;
-	}
-
-	#university-box{
-		display: block;
-		width: 100%;
-	}
-
-	.uni-card {
-		display: inline-grid;
-		width: calc(50% - 20px);
-		margin-right: 10px;
-		margin-bottom: 10px;
-	}
-
-</style>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="deep-purple accent-4">
-
 	<div class="container white accent-1 main-container">
 
 		<br>
@@ -198,11 +120,8 @@
 
 			</div>
 		</div>
-
-		
-
-
 	</div>
+
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
@@ -268,7 +187,7 @@
 					var di = $("<div>");
 					di.addClass("divider");
 
-					
+
 					// Hidden Div
 					var infoDiv = $("<div>");
 					infoDiv.addClass("info-div");
@@ -301,11 +220,11 @@
 
 					cContent.append(infoDiv.hide());
 					card.append(cContent);
-					
+
 
 					$("#university-box").append(card);
 				}
-				
+
 			});
 		  });
 	</script>
