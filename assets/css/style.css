@@ -75,3 +75,10 @@ background: transparent;
 .uni-card.card-open {
 	width: calc(100% - 20px);
 }
+
+.card-chart {
+	width: 100%;
+	min-width: 200px;
+	max-width: 400px;
+	height: 200px;
+}
