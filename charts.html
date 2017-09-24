@@ -69,25 +69,28 @@
 
 			var schoolInfo = $("<div class='school-info'>");
 			schoolInfo.append($("<br>")).append($("<div class='divider'>")).append("<br>");
-			if (school.school.url) {
-				$("<p>").append($("<a>").attr({href: "http://" + school.school.url, target: "_blank"}).text("School Website")).appendTo(schoolInfo)
-			}
-			var withPluses = school.school.name.split(" ").join("+");
-			$.get("http://api.duckduckgo.com/?q=" + withPluses + "&format=json").done(function(json) {
-				if (JSON.parse(json).Image) {
-					$("<img>").attr({src: JSON.parse(json).Image}).appendTo(schoolInfo);
-				}
-			});
 
-			$("<h5>").text("Statistics").appendTo(schoolInfo);
+			var statsRow = $("<div class='row'>").appendTo(schoolInfo);
+			var statsCol = $("<div class='col s6'>").appendTo(statsRow);
+			var imgCol = $("<div class='col s6'>").appendTo(statsRow);
+			$("<h5>").text("Statistics").appendTo(statsCol);
+			if (school.school.url) {
+				$("<p>").append($("<a>").attr({href: "http://" + school.school.url, target: "_blank"}).text("School Website")).appendTo(statsCol)
+			}
 			if (school.school.demographics.size > 0) {
-				$("<p>").text("Student Population: " + school.school.demographics.size).appendTo(schoolInfo);
+				$("<p>").text("Student Population: " + school.school.demographics.size).appendTo(statsCol);
 			}
 			if (school.school.demographics.female > 0 || school.school.demographics.male > 0) {
 				var fPerc = Math.floor(school.school.demographics.female * 100);
 				var mPerc = 100 - fPerc;
-				$("<p>").text(fPerc + "% Female | " + mPerc + "% Male").appendTo(schoolInfo);
+				$("<p>").text(fPerc + "% Female | " + mPerc + "% Male").appendTo(statsCol);
 			}
+			var withPluses = school.school.name.split(" ").join("+");
+			$.get("http://api.duckduckgo.com/?q=" + withPluses + "&format=json").done(function(json) {
+				if (JSON.parse(json).Image) {
+					$("<img class='school-logo'>").attr({src: JSON.parse(json).Image}).appendTo(imgCol);
+				}
+			});
 
 			$("<h5>").text("Admissions").appendTo(schoolInfo);
 

@@ -76,6 +76,10 @@ background: transparent;
 	width: calc(100% - 20px);
 }
 
+.school-logo {
+	max-width: 100%;
+}
+
 .card-chart {
 	width: 100%;
 	min-width: 200px;
