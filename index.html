@@ -226,11 +226,12 @@
 			// Not Working
 			$(document).on("click", ".material-icons", function() {
 
+				$(".info-div").hide();
+
 				// var className = $(this).parent().parent().attr("class");
 				console.log("yes");
 				$(".uni-card", this).css("width", "calc(50% - 20px)");
 
-				$(".info-div").hide();
 			});
 
 			var sc = new Scorecard();
