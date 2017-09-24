@@ -17,6 +17,7 @@
 	<script src="assets/js/jquery.flot.categories.min.js" charset="utf-8"></script>
 	<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
 	<script src="assets/js/test_data.js" charset="utf-8"></script>
+	<script src="assets/js/view_controller.js" charset="utf-8"></script>
 	<script type="text/javascript">
 		var data = TestData;
 		var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; });
@@ -160,6 +161,9 @@
 			} else {
 				$("<p>").text("Repayment Data Unavailable").appendTo(repaymentCol);
 			}
+
+			$("<h5>").text("Salaries").appendTo(schoolInfo);
+			$("<p>").text("TODO: Add starting and eventual salaries").appendTo(schoolInfo);
 
 			[
 				minimize,
