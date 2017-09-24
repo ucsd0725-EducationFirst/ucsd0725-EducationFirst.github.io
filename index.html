@@ -194,69 +194,12 @@
 
 					<div id="university-box">
 
-						 <div class="card uni-card">
-					        
-					        <div class="card-content">
-					        	<span class="card-title activator">University</span>
-
-								<div class="divider"></div>
-								<p>Data data data</p>
-							</div>
-
-							<div class="card-reveal">
-						        <span class="card-title text-darken-4">Card Title<i class="material-icons right">close</i></span>
-			      			    <p>Here is some more information about this product that is only revealed once clicked on.</p>
-  							</div>
-   						 </div>
-
 					</div>
 
 			</div>
 		</div>
 
-		<!-- Modals -->
-		<div>
-
-			<div class="row">
-
-				<div class="col s2">
-					<div class="red accent-4 z-depth-2 modal-trigger" href="#test-modal">
-						<p class="center-align">Doctor</p>
-					</div>
-				</div>
-
-				<div class="col s2">
-					<div class="blue">
-						s
-					</div>
-				</div>
-
-				<div class="col s2">
-					s
-				</div>
-
-				<div class="col s2">
-					s
-				</div>
-
-				<div class="col s2">
-					s
-				</div>
-
-				<div class="col s2">
-					s
-				</div>
-
-			</div>
-
-			<div id="test-modal" class="modal">
-
-				<div class="modal-content">
-					<p>doctor stuff</p>
-				   </div>
-
-			</div>
-		</div>
+		
 
 
 	</div>
@@ -268,8 +211,29 @@
 	<script type="text/javascript">
 		$(document).ready(function(){
 
-			// the "href" attribute of the modal trigger must specify the modal ID that wants to be triggered
 			$('.modal').modal();
+
+			$(document).on("click", ".uni-card", function() {
+
+				var width = parseInt($(this).css("width"));
+
+				if(width < 300) {
+					$(this).css("width", "100%");
+					divOpen = true;
+				}
+				$(".info-div").show();
+			});
+
+			// Not Working
+			$(document).on("click", ".material-icons", function() {
+
+				// var className = $(this).parent().parent().attr("class");
+				// console.log(className);
+				$(".uni-card").css("width", "calc(50% - 20px)");
+				divOpen = false;
+
+				$(".info-div").hide();
+			});
 
 			var sc = new Scorecard();
 			var q = sc.byField("agriculture").byState("CA").get(function(data) {
@@ -282,7 +246,7 @@
 				console.log(ordered[2].school.location);
 				// Math.min if less than 6 objects return
 
-				for(var i=0; i<3;i++) {
+				for(var i=0; i<6; i++) {
 
 					var card = $("<div>");
 					card.addClass("card uni-card");
@@ -291,38 +255,48 @@
 					cContent.addClass("card-content");
 
 					var name = $("<span>");
-					name.addClass("card-title activator school-name");
+					name.addClass("card-title school-name");
 
-					var location = $("<p>");
+					   var icon = $("<i>");
+					   icon.addClass("material-icons right");
+					   icon.html('remove');
+
+					   var schoolSize = $("<p>");
+					   schoolSize.html("Size  -  " + ordered[i].school.demographics.size);
 
 					var di = $("<div>");
 					di.addClass("divider");
 
 					
-					var cReveal = $("<div>");
-					cReveal.addClass("card-reveal");
+					// Hidden Div
+					var infoDiv = $("<div>");
+					infoDiv.addClass("info-div");
 
 					var revealContent =  $("<span>");
 					revealContent.addClass("card-title");
 					revealContent.html("Information");
-
-					   var schoolSize = $("<p>");
-					   schoolSize.html(ordered[i].school.demographics.size);
-
+						var location = $("<p>");
+						var avgSat = $("<p>");
 
 					name.html(ordered[i].school.name);
 					location.html(ordered[i].school.location.city + ", " + ordered[i].school.location.state);
+					avgSat.html("Average SAT  - " + ordered[i].school.admissions.sat.avg);
 
+					cContent.append(icon);
 					cContent.append(name);
 					cContent.append(di);
 					cContent.append(location);
-					revealContent.append(schoolSize);
-					cReveal.append(revealContent);
-					cReveal.append(di);
-					card.append(cContent);
-					card.append(cReveal);
-					$("#university-box").append(card);
 
+					revealContent.prepend("<br>");
+					infoDiv.append(revealContent);
+					infoDiv.append(schoolSize);
+					infoDiv.append(avgSat);
+
+					cContent.append(infoDiv.hide());
+					card.append(cContent);
+					
+
+					$("#university-box").append(card);
 				}
 				
 			});
