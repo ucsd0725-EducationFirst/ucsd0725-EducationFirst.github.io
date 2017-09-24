@@ -136,7 +136,10 @@
 			$(document).on("click", ".uni-card", function() {
 				if ($(this).data("state") === "closed") {
 					$(this).data({state: "open"});
-					$(this).addClass("card-open")
+					$(this).addClass("card-open");
+					$(this).find(".info-div").show();
+				} else {
+					$(this).find(".info-div").hide();
 				}
 			});
 
