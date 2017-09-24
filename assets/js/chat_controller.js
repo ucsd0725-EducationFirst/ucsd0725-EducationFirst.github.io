@@ -4,7 +4,7 @@ var ChatController = function(chatbot, scorecard) {
 	this.scorecard = scorecard;
 	this.currentPath = ["root"];
 	this.context = {};
-	this.state = "where";
+	this.state = "root";
 
 	this.reset = function() {
 		this.currentPath = ["root"];
@@ -51,6 +51,9 @@ var ChatController = function(chatbot, scorecard) {
 
 		if (node.dynamic !== undefined) {
 			return node.dynamic();
+		} else if (node.jump !== undefined) {
+			self.currentPath = node.jump;
+			return self.GetNextPrompt();
 		} else {
 			return node.prompt;
 		}
@@ -58,9 +61,25 @@ var ChatController = function(chatbot, scorecard) {
 
 	this.Consume = function(intents) {
 		switch (self.state) {
-			case "where":
+			case "root":
+				if (intents === "san diego") {
+					self.context["where"] = intents;
+					self.path.push("where");
+					self.state = "where";
+				} else {
+					self.path.push("dunno");
+					self.state = "dunno";
+				}
 				break;
-			case "what":
+			case "dunno":
+				if (intents === "healthcare") {
+					self.context["what"] = intents;
+					self.path.push("what");
+					self.state = "dunno.what";
+				} else {
+					self.path.push("dunno");
+					self.state = "dunno.dunno";
+				}
 				break;
 			default:
 				break;
