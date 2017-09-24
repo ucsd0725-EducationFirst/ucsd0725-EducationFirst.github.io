@@ -1,90 +1,12 @@
 <!DOCTYPE>
 <html>
 <head>
-
 	<title>wireframe</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
-	   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-
-<style>
-	.chatBox{
-		position: relative;
-		width: 100%;
-		height: 60%;
-		overflow-y: scroll;
-		padding-right: 15px;
-		padding-left:15px;
-	}
-
-	html ::-webkit-scrollbar {
-	width: 0px;
-	background: transparent;
-
-	}
-
-	.cb-footer{
-		height: 50px;
-		width: 100%;
-		padding: 0;
-		margin-top: 0;
-	}
-
-	.chatbox-box{
-		height: 60%;
-		width: 100%;
-		overflow: hidden;
-	}
-
-	.cb-send{
-		padding: 2px;
-		height: 65%;
-		margin-top: auto;
-		margin-bottom: auto;
-		float: right;
-	}
-
-	.card-panel{
-		padding-top: 10px;
-		padding-bottom: 10px;
-		padding-left: 12px;
-		padding-right: 8px;
-		margin-bottom: 1px;
-	}
-
-	.head{
-		width: 40%;
-		margin-right: auto;
-		margin-left: auto;
-	}
-
-	.main-container{
-		width: 90%;
-		height: 100%;
-	}
-
-	.text-input{
-		width: 50%;
-		margin-left: auto;
-		margin-right: auto;
-		display: inline;
-	}
-
-	#university-box{
-		display: block;
-		width: 100%;
-	}
-
-	.uni-card {
-		display: inline-grid;
-		width: calc(50% - 20px);
-		margin-right: 10px;
-		margin-bottom: 10px;
-	}
-
-</style>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="assets/css/style.css">
 </head>
 <body class="deep-purple accent-4">
-
 	<div class="container white accent-1 main-container">
 
 		<br>
@@ -198,15 +120,13 @@
 
 			</div>
 		</div>
-
-		
-
-
 	</div>
+
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 	<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
+	<script src="assets/js/test_data.js" charset="utf-8"></script>
 
 	<script type="text/javascript">
 		$(document).ready(function(){
@@ -214,28 +134,30 @@
 			$('.modal').modal();
 
 			$(document).on("click", ".uni-card", function() {
-
-				var width = parseInt($(this).css("width"));
-
-				if(width < 300) {
-					$(this).css("width", "100%");
+				if ($(this).data("state") === "closed") {
+					$(this).data({state: "open"});
+					$(this).addClass("card-open");
+					$(this).find(".info-div").show();
+				} else {
+					$(this).find(".info-div").hide();
 				}
-				$(".info-div").show();
 			});
 
-			// Not Working
-			$(document).on("click", ".material-icons", function() {
-
-				$(".info-div").hide();
-
-				// var className = $(this).parent().parent().attr("class");
-				console.log("yes");
-				$(".uni-card", this).css("width", "calc(50% - 20px)");
-
+			$(document).on("click", ".minimize-card", function() {
+				var schoolID = $(this).data("schoolID");
+				var card = $("#school-" + schoolID);
+				card.removeClass("card-open");
+				// Delay closing card because .uni-card.click() fires after this,
+				// which immediately opens the card again.
+				setTimeout(function() {
+					card.data({state: "closed"});
+				}, 100);
 			});
 
 			var sc = new Scorecard();
-			var q = sc.byField("agriculture").byState("CA").get(function(data) {
+			// var q = sc.byField("agriculture").byState("CA").get(function(data) {
+			function MockQuery(){
+				var data = TestData;
 				var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; })
 				var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
 				ordered.forEach(function(x) {
@@ -251,6 +173,8 @@
 
 					var card = $("<div>");
 					card.addClass("card uni-card");
+					card.data({state: "closed"});
+					card.attr({id: "school-" + ordered[i].key})
 
 					var cContent = $("<div>");
 					cContent.addClass("card-content");
@@ -258,17 +182,18 @@
 					var name = $("<span>");
 					name.addClass("card-title school-name");
 
-					   var icon = $("<i>");
-					   icon.addClass("material-icons right");
-					   icon.html('remove');
+					var icon = $("<i>");
+					icon.addClass("material-icons right minimize-card");
+					icon.html('remove');
+					icon.data({schoolID: ordered[i].key});
 
-					   var schoolSize = $("<p>");
-					   schoolSize.html("Size  -  " + ordered[i].school.demographics.size);
+					var schoolSize = $("<p>");
+					schoolSize.html("Size  -  " + ordered[i].school.demographics.size);
 
 					var di = $("<div>");
 					di.addClass("divider");
 
-					
+
 					// Hidden Div
 					var infoDiv = $("<div>");
 					infoDiv.addClass("info-div");
@@ -301,12 +226,14 @@
 
 					cContent.append(infoDiv.hide());
 					card.append(cContent);
-					
+
 
 					$("#university-box").append(card);
 				}
-				
-			});
+
+			// });
+			};
+			MockQuery();
 		  });
 	</script>
 
