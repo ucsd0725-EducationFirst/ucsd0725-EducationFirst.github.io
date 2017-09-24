@@ -219,7 +219,6 @@
 
 				if(width < 300) {
 					$(this).css("width", "100%");
-					divOpen = true;
 				}
 				$(".info-div").show();
 			});
@@ -228,9 +227,8 @@
 			$(document).on("click", ".material-icons", function() {
 
 				// var className = $(this).parent().parent().attr("class");
-				// console.log(className);
-				$(".uni-card").css("width", "calc(50% - 20px)");
-				divOpen = false;
+				console.log("yes");
+				$(".uni-card", this).css("width", "calc(50% - 20px)");
 
 				$(".info-div").hide();
 			});
@@ -243,10 +241,12 @@
 					console.log(x);
 					console.log(x.school.name)
 				})
-				console.log(ordered[2].school.location);
-				// Math.min if less than 6 objects return
+				console.log(ordered);
 
-				for(var i=0; i<6; i++) {
+				var limit = Math.min(ordered.length , 5);
+				console.log(ordered.length);
+				console.log(limit);
+				for(var i=0; i<limit; i++) {
 
 					var card = $("<div>");
 					card.addClass("card uni-card");
@@ -277,10 +277,14 @@
 					revealContent.html("Information");
 						var location = $("<p>");
 						var avgSat = $("<p>");
+						var inState = $("<p>");
+						var outState = $("<p>");
 
 					name.html(ordered[i].school.name);
 					location.html(ordered[i].school.location.city + ", " + ordered[i].school.location.state);
-					avgSat.html("Average SAT  - " + ordered[i].school.admissions.sat.avg);
+					avgSat.html("Average SAT:  " + ordered[i].school.admissions.sat.avg);
+					inState.html("In state tuition:  " + ordered[i].school.tuition.in_state);
+					outState.html("Out of state tuition:  " + ordered[i].school.tuition.out_state);
 
 					cContent.append(icon);
 					cContent.append(name);
@@ -291,6 +295,8 @@
 					infoDiv.append(revealContent);
 					infoDiv.append(schoolSize);
 					infoDiv.append(avgSat);
+					infoDiv.append(inState);
+					infoDiv.append(outState);
 
 					cContent.append(infoDiv.hide());
 					card.append(cContent);
