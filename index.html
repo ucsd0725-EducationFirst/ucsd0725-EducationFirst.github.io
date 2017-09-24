@@ -134,24 +134,21 @@
 			$('.modal').modal();
 
 			$(document).on("click", ".uni-card", function() {
-
-				var width = parseInt($(this).css("width"));
-
-				if(width < 300) {
-					$(this).css("width", "100%");
+				if ($(this).data("state") === "closed") {
+					$(this).data({state: "open"});
+					$(this).addClass("card-open")
 				}
-				$(".info-div").show();
 			});
 
-			// Not Working
-			$(document).on("click", ".material-icons", function() {
-
-				$(".info-div").hide();
-
-				// var className = $(this).parent().parent().attr("class");
-				console.log("yes");
-				$(".uni-card", this).css("width", "calc(50% - 20px)");
-
+			$(document).on("click", ".minimize-card", function() {
+				var schoolID = $(this).data("schoolID");
+				var card = $("#school-" + schoolID);
+				card.removeClass("card-open");
+				// Delay closing card because .uni-card.click() fires after this,
+				// which immediately opens the card again.
+				setTimeout(function() {
+					card.data({state: "closed"});
+				}, 100);
 			});
 
 			var sc = new Scorecard();
@@ -173,6 +170,8 @@
 
 					var card = $("<div>");
 					card.addClass("card uni-card");
+					card.data({state: "closed"});
+					card.attr({id: "school-" + ordered[i].key})
 
 					var cContent = $("<div>");
 					cContent.addClass("card-content");
@@ -180,12 +179,13 @@
 					var name = $("<span>");
 					name.addClass("card-title school-name");
 
-					   var icon = $("<i>");
-					   icon.addClass("material-icons right");
-					   icon.html('remove');
+					var icon = $("<i>");
+					icon.addClass("material-icons right minimize-card");
+					icon.html('remove');
+					icon.data({schoolID: ordered[i].key});
 
-					   var schoolSize = $("<p>");
-					   schoolSize.html("Size  -  " + ordered[i].school.demographics.size);
+					var schoolSize = $("<p>");
+					schoolSize.html("Size  -  " + ordered[i].school.demographics.size);
 
 					var di = $("<div>");
 					di.addClass("divider");

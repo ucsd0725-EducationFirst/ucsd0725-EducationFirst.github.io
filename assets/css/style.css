@@ -71,3 +71,7 @@ background: transparent;
 	margin-right: 10px;
 	margin-bottom: 10px;
 }
+
+.uni-card.card-open {
+	width: calc(100% - 20px);
+}
