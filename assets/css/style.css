@@ -70,6 +70,7 @@ background: transparent;
 	width: calc(50% - 20px);
 	margin-right: 10px;
 	margin-bottom: 10px;
+	cursor: pointer;
 }
 
 .uni-card.card-open {

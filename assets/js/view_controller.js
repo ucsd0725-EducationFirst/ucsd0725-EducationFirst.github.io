@@ -1,7 +1,7 @@
 function CardForSchool(school, averages) {
-	console.log(school);
+	// console.log(school);
 	var card = $("<div class='card uni-card'>").attr({id: "school-" + school.key}).data({state: "closed"});
-	card.addClass("card-open") // debug
+	// card.addClass("card-open") // debug
 	var cardContent = $("<div class='card-content'>").appendTo(card);
 
 	var minimize = $("<i>");
@@ -14,7 +14,7 @@ function CardForSchool(school, averages) {
 	var loc = school.school.location.city + ", " + school.school.location.state;
 	var schoolLoc = $("<span class='school-location'>").text(loc);
 
-	var schoolInfo = $("<div class='school-info'>");
+	var schoolInfo = $("<div class='school-info'>").hide();
 	schoolInfo.append($("<br>")).append($("<div class='divider'>")).append("<br>");
 
 	var statsRow = $("<div class='row'>").appendTo(schoolInfo);
