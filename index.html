@@ -120,6 +120,16 @@
 
 			</div>
 		</div>
+		<!--EMPLOYMENT PROJECTION 2024................ -->
+		<div class= "row">
+			<div class="card-panel small teal">
+				<img width='200 px' height="154px" src="assets/images/bls2014.png">
+					<span class="title white-text">
+					(var = Category) Employment Projection 2024
+					</span> 
+			</div>
+		</div>
+		<!--End Employment projection..................-->
 	</div>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -138,8 +148,7 @@
 					$(this).data({state: "open"});
 					$(this).addClass("card-open");
 					$(this).find(".info-div").show();
-				} else {
-					$(this).find(".info-div").hide();
+					$(this).find(".minimize-card").show();
 				}
 			});
 
@@ -147,6 +156,8 @@
 				var schoolID = $(this).data("schoolID");
 				var card = $("#school-" + schoolID);
 				card.removeClass("card-open");
+				card.find(".info-div").hide();
+				$(this).hide();
 				// Delay closing card because .uni-card.click() fires after this,
 				// which immediately opens the card again.
 				setTimeout(function() {
@@ -186,6 +197,7 @@
 					icon.addClass("material-icons right minimize-card");
 					icon.html('remove');
 					icon.data({schoolID: ordered[i].key});
+					icon.hide();
 
 					var schoolSize = $("<p>");
 					schoolSize.html("Size  -  " + ordered[i].school.demographics.size);
@@ -201,10 +213,10 @@
 					var revealContent =  $("<span>");
 					revealContent.addClass("card-title");
 					revealContent.html("Information");
-						var location = $("<p>");
-						var avgSat = $("<p>");
-						var inState = $("<p>");
-						var outState = $("<p>");
+					var location = $("<p>");
+					var avgSat = $("<p>");
+					var inState = $("<p>");
+					var outState = $("<p>");
 
 					name.html(ordered[i].school.name);
 					location.html(ordered[i].school.location.city + ", " + ordered[i].school.location.state);
