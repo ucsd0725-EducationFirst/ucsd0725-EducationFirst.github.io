@@ -1,4 +1,3 @@
-var USStatesMap = { alabama: "AL", alaska: "AK", arizona: "AZ", california: "CA", colorado: "CO", connecticut: "CT", delaware: "DE", florida: "FL", georgia: "GA", hawaii: "HI", idaho: "ID", illinois: "IL", indiana: "IN", iowa: "IA", kansas: "KS", kentucky: "KY", louisiana: "LA", maine: "ME", maryland: "MD", massachusetts: "MA", michigan: "MI", minnesota: "MN", mississippi: "MS", missouri: "MO", montana: "MT", nebraska: "NE", "new hampshire": "NH", "new jersey": "NJ", "new mexico": "NM", "new york": "NY", "north carolina": "NC", "north dakota": "ND", ohio: "OH", oklahoma: "OK", oregon: "OR", pennsylvania: "PA", "rhode island": "RI", "south carolina": "SC", "south dakota": "SD", tennessee: "TN", texas: "TX", utah: "UT", vermont: "VT", virginia: "VA", washington: "WA", "west virginia": "WV", wisconsin: "WI", wyoming: "WY"};
 
 var ChatController = function(chatbot, scorecard) {
 	var self = this;
@@ -7,6 +6,7 @@ var ChatController = function(chatbot, scorecard) {
 	this.currentPath = ["root"];
 	this.context = {};
 	this.state = "root";
+	this.requestClarification = false;
 
 	this.reset = function() {
 		this.currentPath = ["root"];
@@ -15,7 +15,7 @@ var ChatController = function(chatbot, scorecard) {
 
 	this.tree = {
 		root: {
-			prompt: ["Hello! I want to help you choose a school.", "Do you know where you want to go to school?", "It's OK if you're not sure or don't care."],
+			prompt: ["Hello! I want to help you choose a university.", "In which state do you want to go to college?", "It's OK if you're not sure or don't care."],
 			dunno: {
 				prompt: ["OK. Do you know what you want to study?"],
 				what: {
@@ -46,6 +46,20 @@ var ChatController = function(chatbot, scorecard) {
 	};
 
 	this.GetNextPrompt = function() {
+		if (self.requestClarification) {
+			self.requestClarification = false;
+			var clarification = ["I'm sorry, I don't understand."];
+			switch (self.state) {
+				case "root":
+					clarification.push("Please enter a US state name or abbreviation to search for colleges.");
+					return clarification;
+					break;
+				default:
+					break;
+			}
+			return clarification.concat(self.GetNextPrompt());
+		}
+
 		var node;
 		self.currentPath.forEach(function(key) {
 			if (key === "root") {
@@ -59,47 +73,97 @@ var ChatController = function(chatbot, scorecard) {
 			return node.dynamic();
 		} else if (node.jump !== undefined) {
 			self.currentPath = node.jump;
+			self.state = node.jump.slice(1).join(".");
 			return self.GetNextPrompt();
 		} else {
 			return node.prompt;
 		}
 	};
 
-	this.ParseInput = function(input, callback) {
-		SendStatementQuery(input, callback);
+	this.HandleInput = function(input, callback) {
+		self.chatbot.ParseInput(input, function(intents) {
+			self.Consume(intents);
+			callback();
+		});
 	}
 
 	this.Consume = function(intents) {
 		console.log(intents);
 		switch (self.state) {
 			case "root":
-				if (intents === "san diego") {
-					self.context["where"] = intents;
-					self.currentPath.push("where");
-					self.state = "where";
+				if (intents.kind === "location") {
+					// Look for location
+					if (intents.value.length === 2) {
+						// State abbreviation?
+						var abbr = intents.value.toUpperCase();
+						if (InverseUSStatesMap[abbr] !== undefined) {
+							// Found state
+							self.context["where"] = abbr;
+							self.currentPath.push("where");
+							self.state = "where";
+						} else {
+							// State not found
+							self.requestClarification = true;
+						}
+					} else {
+						// State name?
+						var abbr = USStatesMap[intents.value.toLowerCase()];
+						if (abbr !== undefined) {
+							// Found state
+							self.context["where"] = abbr;
+							self.currentPath.push("where");
+							self.state = "where";
+						} else {
+							// State not found
+							self.requestClarification = true;
+						}
+					}
+				} else if (intents.kind === "response") {
+					if (intents.value === "unsure" || intents.value === "indifferent") {
+						// User unsure/indifferent where they want to study
+						self.currentPath.push("dunno");
+						self.state = "dunno";
+					} else {
+						self.requestClarification = true;
+					}
 				} else {
-					self.currentPath.push("dunno");
-					self.state = "dunno";
+					self.requestClarification = true;
 				}
 				break;
 			case "dunno":
-				if (intents === "healthcare") {
-					self.context["what"] = intents;
+				if (intents.kind === "industry") {
+					// What the user wants to study
+					self.context["what"] = intents.value;
 					self.currentPath.push("what");
 					self.state = "dunno.what";
+				} else if (intents.kind === "response") {
+					if (intents.value === "unsure" || intents.value === "indifferent") {
+						// User unsure/indifferent what they want to study
+						self.currentPath.push("dunno");
+						self.state = "dunno.dunno";
+					} else {
+						self.requestClarification = true;
+					}
 				} else {
-					self.currentPath.push("dunno");
-					self.state = "dunno.dunno";
+					self.requestClarification = true;
 				}
 				break;
 			case "where":
-				if (intents === "healthcare") {
-					self.context["what"] = intents;
+				if (intents.kind === "industry") {
+					// What the user wants to study
+					self.context["what"] = intents.value;
 					self.currentPath.push("what");
 					self.state = "where.what";
+				} else if (intents.kind === "response") {
+					if (intents.value === "unsure" || intents.value === "indifferent") {
+						// User unsure/indifferent what they want to study
+						self.currentPath.push("dunno");
+						self.state = "where.dunno";
+					} else {
+						self.requestClarification = true;
+					}
 				} else {
-					self.currentPath.push("dunno");
-					self.state = "where.dunno";
+					self.requestClarification = true;
 				}
 			default:
 				break;

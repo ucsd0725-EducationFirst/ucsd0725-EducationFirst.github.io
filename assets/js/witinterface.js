@@ -19,9 +19,9 @@ var industries = [{"get_agri_ed":"agriculture"}, {"get_arch_ed":"architecture"},
 
 function SendEntityQuery(){
     $.ajax({
-        url: 'https://api.wit.ai/entities/intent?v=20170307',
+        url: 'https://api.wit.ai/entities/intent?v=20170925',
         data: {
-            'access_token' : "5HSSLZ5IRHZEJVKTQRF7YOT6NVY442FB"
+            'access_token' : "WWDLJEIW4LK3YSBDEKX6OZ5HLLS2FJEE"
         },
         dataType: 'jsonp',
         method: 'GET',
@@ -44,10 +44,10 @@ function SendEntityQuery(){
 
 function SendStatementQuery(question, callback) {
     $.ajax({
-        url: 'https://api.wit.ai/message?v=20170307',
+        url: 'https://api.wit.ai/message?v=20170925',
         data: {
             'q': question,
-            'access_token': "5HSSLZ5IRHZEJVKTQRF7YOT6NVY442FB"
+            'access_token': "WWDLJEIW4LK3YSBDEKX6OZ5HLLS2FJEE"
         },
         dataType: 'jsonp',
         method: 'GET',

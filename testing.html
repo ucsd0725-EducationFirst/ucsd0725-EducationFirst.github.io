@@ -21,10 +21,12 @@
 
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="assets/js/witinterface.js" charset="utf-8"></script>
+	<script src="assets/js/us_states.js" charset="utf-8"></script>
+	<script src="assets/js/chatbot.js" charset="utf-8"></script>
 	<script src="assets/js/chat_controller.js" charset="utf-8"></script>
 	<script type="text/javascript">
-		var cc = new ChatController();
+		var bot = new ChatBot();
+		var cc = new ChatController(bot);
 		var chatbox = $("#chatbox");
 
 		function DisplayChatbotPrompt() {
@@ -50,9 +52,7 @@
 			chatbox.append(bubble);
 
 			// Query wit.ai
-			cc.ParseInput(input, function(intents) {
-				// Handle Intents
-				cc.Consume(intents);
+			cc.HandleInput(input, function() {
 				DisplayChatbotPrompt();
 			})
 		});
