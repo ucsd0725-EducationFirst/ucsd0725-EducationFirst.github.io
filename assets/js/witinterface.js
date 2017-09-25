@@ -53,33 +53,33 @@ function SendStatementQuery(question, callback) {
         method: 'GET',
         success: function(response) {
             var responseOb = {};
-            console.log("success!", response);
+            console.log("witai response:", response);
             if (response.entities.intent !== undefined && response.entities.intent !== null) {
                 if(response.entities.intent[0].value === "affirmation" ||
                    response.entities.intent[0].value === "negation" ||
                    response.entities.intent[0].value === "confirmation") {
-                    console.log("affirmation/negation/confirmation intent");
+                    // console.log("affirmation/negation/confirmation intent");
                     responseOb = {"industry":null, "answer":response.entities.intent[0].value, "location":null, "message":response._text};
                 } else {
-                    console.log("not a confirmation/affirmation");
+                    // console.log("not a confirmation/affirmation");
                     responseOb = {"industry": response.entities.intent[0].value, "answer": null,"location": null,"message": response._text};
                     if (response.entities.location !== undefined && response.entities.location !== null){
-                        console.log("industry location intent");
-                        console.log(response.entities.location[0].value);
+                        // console.log("industry location intent");
+                        // console.log(response.entities.location[0].value);
                         responseOb.location = response.entities.location[0].value;
                     }
                 }
             } else if (response.entities.location !== undefined && response.entities.location !== null) {
-                console.log("location intent")
+                // console.log("location intent")
                 responseOb = {"industry":null, "answer": null, "location": response.entities.location[0].value, "message": response._text};
             }
 
-            console.log("logging response from witai interface");
-            console.log(responseOb);
+            // console.log("logging response from witai interface");
+            // console.log(responseOb);
 
             var retOb = Object.assign({},responseOb);
-            console.log("logging copy object in queryfunc");
-            console.log(retOb);
+            // console.log("logging copy object in queryfunc");
+            // console.log(retOb);
             callback(retOb);
         }
     });

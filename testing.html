@@ -38,17 +38,23 @@
 
 		$("#submit").click(function(e) {
 			e.preventDefault();
+
 			// Get and Reset Input
 			var input = $("#userInput").val();
+			$("#inputForm")[0].reset();
+			if (input.length < 1) { return; }
+
+			// Log Input to Chat Window
 			var bubble = $("<div class='bubble user'>");
 			bubble.html(input);
 			chatbox.append(bubble);
-			$("#inputForm")[0].reset();
+
 			// Query wit.ai
-			// TODO get intents from input
-			// Send to Chat Controller
-			cc.Consume(input);
-			DisplayChatbotPrompt();
+			cc.ParseInput(input, function(intents) {
+				// Handle Intents
+				cc.Consume(intents);
+				DisplayChatbotPrompt();
+			})
 		});
 
 		$(document).ready(function() {

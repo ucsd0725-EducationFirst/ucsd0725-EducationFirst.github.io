@@ -1,3 +1,5 @@
+var USStatesMap = { alabama: "AL", alaska: "AK", arizona: "AZ", california: "CA", colorado: "CO", connecticut: "CT", delaware: "DE", florida: "FL", georgia: "GA", hawaii: "HI", idaho: "ID", illinois: "IL", indiana: "IN", iowa: "IA", kansas: "KS", kentucky: "KY", louisiana: "LA", maine: "ME", maryland: "MD", massachusetts: "MA", michigan: "MI", minnesota: "MN", mississippi: "MS", missouri: "MO", montana: "MT", nebraska: "NE", "new hampshire": "NH", "new jersey": "NJ", "new mexico": "NM", "new york": "NY", "north carolina": "NC", "north dakota": "ND", ohio: "OH", oklahoma: "OK", oregon: "OR", pennsylvania: "PA", "rhode island": "RI", "south carolina": "SC", "south dakota": "SD", tennessee: "TN", texas: "TX", utah: "UT", vermont: "VT", virginia: "VA", washington: "WA", "west virginia": "WV", wisconsin: "WI", wyoming: "WY"};
+
 var ChatController = function(chatbot, scorecard) {
 	var self = this;
 	this.chatbot = chatbot;
@@ -63,7 +65,12 @@ var ChatController = function(chatbot, scorecard) {
 		}
 	};
 
+	this.ParseInput = function(input, callback) {
+		SendStatementQuery(input, callback);
+	}
+
 	this.Consume = function(intents) {
+		console.log(intents);
 		switch (self.state) {
 			case "root":
 				if (intents === "san diego") {
