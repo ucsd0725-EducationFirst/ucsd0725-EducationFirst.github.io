@@ -25,30 +25,22 @@ function SendEntityQuery(){
         },
         dataType: 'jsonp',
         method: 'GET',
-            success: function(response) {
+        success: function(response) {
             console.log("success!", response);
-            for(var i =0;i < response.values.length;i++){
-            var $trow= $("<tr>");
-            var $tdintent = $("<td>");
-            $tdintent.html("<b>" + response.values[i].value + "</b>");
-            $trow.append($tdintent);
-            var exps = "";
-            for(var j=0;j < response.values[i].expressions.length;j++){
-            exps = exps  + response.values[i].expressions[j] + " ,";
-            }
-            var $tdintentexps = $("<td>");
-            $tdintentexps.html("<i>" + exps + "</i>");
-            $trow.append($tdintentexps);
-            $("#tbd").append($trow);
+            for (var i =0; i < response.values.length; i++) {
+                var trow= $("<tr>");
+                var tdintent = $("<td>");
+                tdintent.html("<b>" + response.values[i].value + "</b>");
+                trow.append(tdintent);
+                var exps = response.values[i].expressions.join(", ");
+                var tdintentexps = $("<td>");
+                tdintentexps.html("<i>" + exps + "</i>");
+                trow.append(tdintentexps);
+                $("#tbd").append(trow);
             }
         }
     });
 }
-
-// function callback(retOb){
-//     console.log("logging retob in callback");
-//     console.log(retOb);
-// }
 
 function SendStatementQuery(question, callback) {
     $.ajax({
