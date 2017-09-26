@@ -128,3 +128,31 @@ function OrderChildrenByPropertyPath(object, path, ascending) {
     });
     return ordered;
 }
+
+function CalculateAverages(schools) {
+    var averages = {
+        "in-state-tuition": {count: 0, sum: 0},
+        "out-state-tuition": {count: 0, sum: 0}
+    };
+    for (var i = 0; i < schools.length; i++) {
+        var s = schools[i];
+        if (s.school.tuition.in_state > 0) {
+            averages["in-state-tuition"].count++;
+            averages["in-state-tuition"].sum += s.school.tuition.in_state;
+        }
+        if (s.school.tuition.out_state > 0) {
+            averages["out-state-tuition"].count++;
+            averages["out-state-tuition"].sum += s.school.tuition.out_state;
+        }
+    }
+    for (var key in averages) {
+        var obj = averages[key];
+        if (obj.count > 0) {
+            obj.average = obj.sum / obj.count;
+        } else {
+            obj.average = 0;
+        }
+        averages[key] = obj;
+    }
+    return averages;
+}

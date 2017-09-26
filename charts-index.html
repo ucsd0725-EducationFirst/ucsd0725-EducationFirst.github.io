@@ -1,0 +1,211 @@
+<!DOCTYPE>
+<html>
+<head>
+	<title>wireframe</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body class="deep-purple accent-4">
+	<div class="container white accent-1 main-container">
+
+		<br>
+		<!-- Page Header -->
+		<nav class="head">
+			<div class="nav-wrapper">
+				<a class="brand-logo center">Career</a>
+			</div>
+		</nav>
+
+
+		<br>
+		<!-- Chat Box and Cards -->
+		<div class="row">
+			<div class="chatbox-box col s4">
+
+				<div class="chatBox red accent-1">
+
+					<div class="row">
+						<div class="col s12 m7">
+							<div class="card-panel small teal">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+					<div class="row">
+						<div class="col s7 offset-s5">
+							<div class="card-panel blue">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+					<div class="row">
+						<div class="col s12 m7">
+							<div class="card-panel small teal">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+					<div class="row">
+						<div class="col s7 offset-s5">
+							<div class="card-panel blue">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+					<div class="row">
+						<div class="col s12 m7">
+							<div class="card-panel small teal">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+				</div>
+
+				<footer class="page-footer cb-footer">
+
+					<div class="text-input">
+						<textarea rows="2" style="width:60%;" >
+
+
+						</textarea>
+					</div>
+					<div class="waves-effect waves-light black-text cb-send btn">
+						Send<i class="tiny material-icons">send</i>
+					</div>
+
+				   </footer>
+
+
+					<!-- <div class="jobs-box">
+
+						<ul class="collapsible jobs-box" data-collapsible="accordion">
+							<li>
+							   <div class="collapsible-header"><i class="material-icons">airplanemode_active</i>Pilot</div>
+							   <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							</li>
+							<li>
+							   <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+							   <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							</li>
+							<li>
+							   <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+							   <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							</li>
+						  </ul>
+					</div> -->
+
+			</div>
+
+			<div class="col s8">
+
+					<div id="university-box">
+
+					</div>
+
+			</div>
+		</div>
+	</div>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script src="assets/js/jquery.flot.min.js" charset="utf-8"></script>
+	<script src="assets/js/jquery.flot.categories.min.js" charset="utf-8"></script>
+	<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
+	<script src="assets/js/view_controller.js" charset="utf-8"></script>
+	<script src="assets/js/test_data.js" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			$('.modal').modal();
+
+			$(document).on("click", ".uni-card", function() {
+				if ($(this).data("state") === "closed") {
+					$(this).data({state: "open"});
+					$(this).addClass("card-open");
+					$(this).find(".school-info").show();
+					$(this).find(".minimize-card").show();
+				}
+			});
+
+			$(document).on("click", ".minimize-card", function() {
+				var schoolID = $(this).data("schoolID");
+				var card = $("#school-" + schoolID);
+				card.removeClass("card-open");
+				card.find(".school-info").hide();
+				$(this).hide();
+				// Delay closing card because .uni-card.click() fires after this,
+				// which immediately opens the card again.
+				setTimeout(function() {
+					card.data({state: "closed"});
+				}, 100);
+			});
+
+			function CalculateAverages(schools) {
+				var averages = {
+					"in-state-tuition": {count: 0, sum: 0},
+					"out-state-tuition": {count: 0, sum: 0}
+				};
+				for (var i = 0; i < schools.length; i++) {
+					var s = schools[i];
+					if (s.school.tuition.in_state > 0) {
+						averages["in-state-tuition"].count++;
+						averages["in-state-tuition"].sum += s.school.tuition.in_state;
+					}
+					if (s.school.tuition.out_state > 0) {
+						averages["out-state-tuition"].count++;
+						averages["out-state-tuition"].sum += s.school.tuition.out_state;
+					}
+				}
+				for (var key in averages) {
+					var obj = averages[key];
+					if (obj.count > 0) {
+						obj.average = obj.sum / obj.count;
+					} else {
+						obj.average = 0;
+					}
+					averages[key] = obj;
+				}
+				return averages;
+			}
+
+			var sc = new Scorecard();
+			// var q = sc.byField("agriculture").byState("CA").get(function(data) {
+			function MockQuery(){
+				var data = TestData;
+				var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; })
+				var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
+
+				var averages = CalculateAverages(ordered);
+				ordered.forEach(function(school) {
+					var card = CardForSchool(school, averages);
+					$("#university-box").append(card);
+				});
+
+			// });
+			};
+			MockQuery();
+		  });
+	</script>
+
+
+
+</body>
+</html>

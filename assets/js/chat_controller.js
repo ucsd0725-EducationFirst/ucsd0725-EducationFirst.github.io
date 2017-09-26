@@ -30,14 +30,27 @@ var ChatController = function(chatbot, scorecard) {
 				what: {
 					dynamic: function() {
 						if (self.context["where"] !== undefined) {
+							self.scorecard
+							.byField(self.context["what"])
+							.byState(self.context["where"])
+							.get(self.displaySchools);
+
 							return ["Great! Here are some of the top schools in " + self.context["where"] + " that offer " + self.context["what"]];
 						} else {
+							self.scorecard
+							.byField(self.context["what"])
+							.get(self.displaySchools);
+
 							return ["OK. Here are some of the top schools that offer degrees in " + self.context["what"]];
 						}
 					}
 				},
 				dunno: {
 					dynamic: function() {
+						self.scorecard
+						.byState(self.context["where"])
+						.get(self.displaySchools);
+
 						return ["OK. Here are some of the top schools in " + self.context["where"]];
 					}
 				}
@@ -168,6 +181,19 @@ var ChatController = function(chatbot, scorecard) {
 				}
 			default:
 				break;
+		}
+	};
+
+	self.displaySchools = function(data) {
+		var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; })
+		var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
+		var averages = CalculateAverages(ordered);
+
+		var count = Math.min(6, ordered.length);
+		for (var i = 0; i < count; i++) {
+			var school = ordered[i];
+			var card = CardForSchool(school, averages);
+			$("#university-box").append(card);
 		}
 	};
 };
