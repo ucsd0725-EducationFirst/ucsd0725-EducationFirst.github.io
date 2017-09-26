@@ -1,3 +1,12 @@
+/* Sticky Footer */
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main { flex: 1 0 auto; }
+/* Sticky Footer */
+
 header {
     padding: 6px 0;
 }
@@ -53,11 +62,6 @@ background: transparent;
 	margin-right: auto;
 	margin-left: auto;
 }
-
-/*.main-container{
-	width: 90%;
-	height: 100%;
-}*/
 
 .text-input{
 	width: 50%;
