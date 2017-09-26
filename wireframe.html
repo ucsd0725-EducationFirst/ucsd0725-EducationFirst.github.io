@@ -1,65 +1,136 @@
-<!DOCTYPE html>
+<!DOCTYPE>
 <html>
 <head>
-	<title>Education First</title>
+	<title>wireframe</title>
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
 	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 	<link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body>
-	<header class="red darken-1 white-text">
-		<div class="container">
-			<h1 class="center-on-small-only">Education First</h1>
-		</div>
-	</header>
+<body class="deep-purple accent-4">
+	<div class="container white accent-1 main-container">
 
-	<div class="container">
+		<br>
+		<!-- Page Header -->
+		<nav class="head">
+			<div class="nav-wrapper">
+				<a class="brand-logo center">Career</a>
+			</div>
+		</nav>
+
+
+		<br>
 		<!-- Chat Box and Cards -->
 		<div class="row">
-			<div class="chatbox-box col s12 m6 l4">
-				<div class="chatBox">
+			<div class="chatbox-box col s4">
+
+				<div class="chatBox red accent-1">
+
+					<div class="row">
+						<div class="col s12 m7">
+							<div class="card-panel small teal">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+					<div class="row">
+						<div class="col s7 offset-s5">
+							<div class="card-panel blue">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+					<div class="row">
+						<div class="col s12 m7">
+							<div class="card-panel small teal">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+					<div class="row">
+						<div class="col s7 offset-s5">
+							<div class="card-panel blue">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
+					<div class="row">
+						<div class="col s12 m7">
+							<div class="card-panel small teal">
+								  <span class="white-text">
+									  Text text Text text Text text Text text
+								  </span>
+							</div>
+						  </div>
+					</div>
+
 				</div>
 
 				<footer class="page-footer cb-footer">
+
 					<div class="text-input">
-						<textarea rows="2" style="width:60%;" ></textarea>
+						<textarea rows="2" style="width:60%;" >
+
+
+						</textarea>
 					</div>
 					<div class="waves-effect waves-light black-text cb-send btn">
 						Send<i class="tiny material-icons">send</i>
 					</div>
-				</footer>
+
+				   </footer>
+
+
+					<!-- <div class="jobs-box">
+
+						<ul class="collapsible jobs-box" data-collapsible="accordion">
+							<li>
+							   <div class="collapsible-header"><i class="material-icons">airplanemode_active</i>Pilot</div>
+							   <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							</li>
+							<li>
+							   <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
+							   <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							</li>
+							<li>
+							   <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
+							   <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
+							</li>
+						  </ul>
+					</div> -->
+
 			</div>
 
-			<div class="col s12 m6 l8">
-				<div id="university-box"></div>
+			<div class="col s8">
+
+					<div id="university-box">
+
+					</div>
+
 			</div>
 		</div>
-
 		<!--EMPLOYMENT PROJECTION 2024................ -->
 		<div class= "row">
 			<div class="card-panel small teal">
 				<img width='200 px' height="154px" src="assets/images/bls2014.png">
 					<span class="title white-text">
 					(var = Category) Employment Projection 2024
-					</span>
+					</span> 
 			</div>
 		</div>
 		<!--End Employment projection..................-->
 	</div>
-
-	<footer class="page-footer">
-		<div class="container grey-text text-lighten-3">
-			<h5>More Information to Explore</h5>
-			<p>Bureau of Labor Statistics</p>
-			<br>
-		</div>
-		<div class="footer-copyright">
-			<div class="container">
-				&copy; 2017
-				<a href="#" class="grey-text text-lighten-4 right">Colophon</a>
-			</div>
-		</div>
-	</footer>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
@@ -95,8 +166,87 @@
 			});
 
 			var sc = new Scorecard();
+			// var q = sc.byField("agriculture").byState("CA").get(function(data) {
+			function MockQuery(){
+				var data = TestData;
+				var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; })
+				var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
+				ordered.forEach(function(x) {
+					console.log(x);
+					console.log(x.school.name)
+				})
+				console.log(ordered);
 
-		});
+				var limit = Math.min(ordered.length , 5);
+				console.log(ordered.length);
+				console.log(limit);
+				for(var i=0; i<limit; i++) {
+
+					var card = $("<div>");
+					card.addClass("card uni-card");
+					card.data({state: "closed"});
+					card.attr({id: "school-" + ordered[i].key})
+
+					var cContent = $("<div>");
+					cContent.addClass("card-content");
+
+					var name = $("<span>");
+					name.addClass("card-title school-name");
+
+					var icon = $("<i>");
+					icon.addClass("material-icons right minimize-card");
+					icon.html('remove');
+					icon.data({schoolID: ordered[i].key});
+					icon.hide();
+
+					var schoolSize = $("<p>");
+					schoolSize.html("Size  -  " + ordered[i].school.demographics.size);
+
+					var di = $("<div>");
+					di.addClass("divider");
+
+
+					// Hidden Div
+					var infoDiv = $("<div>");
+					infoDiv.addClass("info-div");
+
+					var revealContent =  $("<span>");
+					revealContent.addClass("card-title");
+					revealContent.html("Information");
+					var location = $("<p>");
+					var avgSat = $("<p>");
+					var inState = $("<p>");
+					var outState = $("<p>");
+
+					name.html(ordered[i].school.name);
+					location.html(ordered[i].school.location.city + ", " + ordered[i].school.location.state);
+					avgSat.html("Average SAT:  " + ordered[i].school.admissions.sat.avg);
+					inState.html("In state tuition:  " + ordered[i].school.tuition.in_state);
+					outState.html("Out of state tuition:  " + ordered[i].school.tuition.out_state);
+
+					cContent.append(icon);
+					cContent.append(name);
+					cContent.append(di);
+					cContent.append(location);
+
+					revealContent.prepend("<br>");
+					infoDiv.append(revealContent);
+					infoDiv.append(schoolSize);
+					infoDiv.append(avgSat);
+					infoDiv.append(inState);
+					infoDiv.append(outState);
+
+					cContent.append(infoDiv.hide());
+					card.append(cContent);
+
+
+					$("#university-box").append(card);
+				}
+
+			// });
+			};
+			MockQuery();
+		  });
 	</script>
 
 

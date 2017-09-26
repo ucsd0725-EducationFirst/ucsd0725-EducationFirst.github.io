@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Education First</title>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+	<header class="red darken-1 white-text">
+		<div class="container">
+			<h1 class="center-on-small-only">Education First</h1>
+		</div>
+	</header>
+
+	<div class="container">
+		<!-- Chat Box and Cards -->
+		<div class="row">
+			<div class="chatbox-box col s12 m6 l4">
+				<div class="chatBox">
+				</div>
+
+				<footer class="page-footer cb-footer">
+					<div class="text-input">
+						<textarea rows="2" style="width:60%;" ></textarea>
+					</div>
+					<div class="waves-effect waves-light black-text cb-send btn">
+						Send<i class="tiny material-icons">send</i>
+					</div>
+				</footer>
+			</div>
+
+			<div class="col s12 m6 l8">
+				<div id="university-box"></div>
+			</div>
+		</div>
+
+		<!--EMPLOYMENT PROJECTION 2024................ -->
+		<div class= "row">
+			<div class="card-panel small teal">
+				<img width='200 px' height="154px" src="assets/images/bls2014.png">
+					<span class="title white-text">
+					(var = Category) Employment Projection 2024
+					</span>
+			</div>
+		</div>
+		<!--End Employment projection..................-->
+	</div>
+
+	<footer class="page-footer">
+		<div class="container grey-text text-lighten-3">
+			<h5>More Information to Explore</h5>
+			<p>Bureau of Labor Statistics</p>
+			<br>
+		</div>
+		<div class="footer-copyright">
+			<div class="container">
+				&copy; 2017
+				<a href="#" class="grey-text text-lighten-4 right">Colophon</a>
+			</div>
+		</div>
+	</footer>
+
+	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+	<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
+	<script src="assets/js/test_data.js" charset="utf-8"></script>
+
+	<script type="text/javascript">
+		$(document).ready(function(){
+
+			$('.modal').modal();
+
+			$(document).on("click", ".uni-card", function() {
+				if ($(this).data("state") === "closed") {
+					$(this).data({state: "open"});
+					$(this).addClass("card-open");
+					$(this).find(".info-div").show();
+					$(this).find(".minimize-card").show();
+				}
+			});
+
+			$(document).on("click", ".minimize-card", function() {
+				var schoolID = $(this).data("schoolID");
+				var card = $("#school-" + schoolID);
+				card.removeClass("card-open");
+				card.find(".info-div").hide();
+				$(this).hide();
+				// Delay closing card because .uni-card.click() fires after this,
+				// which immediately opens the card again.
+				setTimeout(function() {
+					card.data({state: "closed"});
+				}, 100);
+			});
+
+			var sc = new Scorecard();
+
+		});
+	</script>
+
+
+
+</body>
+</html>
