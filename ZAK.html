@@ -1,0 +1,282 @@
+<html>
+  <head>
+
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+
+//Question= Would you like to see the 10 Highest Paying Associate Degrees (by Salary Potential) ?
+    var TopPayingAssociate = {
+"Rank1" : {
+    'Name': 'Instrumentation Technology Associate',
+    'Early Career Pay' :  42900,
+    'Mid-Career Pay' : 92500,
+    'Info' : 'Instrumentation technology programs teach students about control processes and measurement functions of instrumentation devices.'
+    },
+"Rank2" :  {
+    'Name': 'Radiation Therapy Associate',
+    'Early Career Pay' : 57900,
+    'Mid-Career Pay' : 87500,
+    'Info' : 'Radiation therapists treat cancer in patients by administering radiation to cancer cells.'
+    },
+"Rank3" :  {
+    'Name': 'Management Information Systems (MIS) Associate',
+    'Early Career Pay' : 44200,
+    'Mid-Career Pay' : 78800,
+    'Info' : 'Management information system (MIS) degree programs prepare individuals for work as analysts or managerial positions.'
+    },
+"Rank4" :  {
+    'Name': 'Nuclear Medicine Technology Associate',
+    'Early Career Pay' : 57900,
+    'Mid-Career Pay' : 74600,
+    'Info' : "Associate's degree programs in nuclear medicine technology teach students to administer radiopharmaceuticals to help diagnose illnesses and diseases."
+    },
+"Rank5" :  {
+    'Name': 'Construction Management Associate',
+    'Early Career Pay' : 43100,
+    'Mid-Career Pay' : 73400,
+    'Info' : "Construction management associate's degree can be earned through completing a variety of courses relating to construction safety, estimating cost, and surveying and mapping."
+    },
+"Rank6" :  {
+    'Name': 'Electrical Engineering (EE) Associate',
+    'Early Career Pay' : 41500,
+    'Mid-Career Pay' : 73200,
+    'Info' : 'Electrical engineering careers design and implement electronic components used in a wide variety of products.'
+    },
+"Rank7" :  {
+    'Name': 'Electrical Engineering Technology (EET) Associate',
+    'Early Career Pay' : 41900,
+    'Mid-Career Pay': 72600,
+    'Info' : 'EET is an engineering technology field that implements and applies the principles of electrical engineering.Like electrical engineering, EET deals with the design, application, installation, manufacturing, operation and/or maintenance of electrical/electronics systems.'
+    },
+"Rank8" :  {
+    'Name': 'Engineering Associate',
+    'Early Career Pay' : 39700,
+    'Mid-Career Pay' : 72500,
+    'Info' : "The program consists of intensive studies in mathematics, science and engineering technology. Two-year associate's programs in engineering science or engineering technology cover civil, electrical, industrial, chemical and mechanical engineering."
+    },
+"Rank9" :  {
+    'Name': 'Economics  Associate',
+    'Early Career Pay' : 35500,
+    'Mid-Career Pay' : 72400,
+    'Info' : "Economics associate's degree programs teach you the skills to research and analyze economic trends and prepare you for a 4-year degree."
+    },
+"Rank9" :  {
+    'Name': 'Nursing Science Associate',
+    'Early Career Pay' : 54900,
+    'Mid-Career Pay' : 72400,
+    'Info' : 'Students enrolled in an Associate of Science in Nursing program would take courses in nursing, anatomy, physiology, microbiology, chemistry, nutrition, psychology and other social and behavioral sciences.'
+    },
+"Rank11" :  {
+    'Name': 'Mechanical Engineering (ME) Associate',
+    'Early Career Pay' : 42100,
+    'Mid-Career Pay' : 72000,
+    'Info' : 'Students learn how to troubleshoot and improve the performance of various mechanical systems.'
+    },
+"Rank12" :  {
+    'Name':'Computer Engineering (CE) Associate',
+    'Early Career Pay' : 41600,
+    'Mid-Career Pay' : 70800,
+    'Info' : ' Computer Engineering program combine computer engineering and electrical engineering principles with computer science skills.'
+    },
+"Rank13" :  {
+    'Name': 'Dental Hygiene Associate',
+    'Early Career Pay' : 62600,
+    'Mid-Career Pay' : 70700,
+    'Info' : "An associate's degree program in dental hygiene teaches students how to administer various dental treatments to patients and how to provide preventive care for teeth and gums."
+    },
+"Rank14" :  {
+    'Name': 'Computer Science (CS) & Engineering Associate',
+    'Early Career Pay' : 43300,
+    'Mid-Career Pay' : 70300,
+    'Info' : 'Computer professionals are responsible for analyzing requirements, planning, designing, developing and supporting computing solutions. Computer professionals are employed in all industries, including manufacturing, finance, service, retail and gaming.'
+    },
+"Rank15" :  {
+    'Name': 'Civil Engineering (CE) Associate',
+    'Early Career Pay' : 35200,
+    'Mid-Career Pay' : 70100,
+    'Info' :'Learn to be qualified to help architects and senior engineers construct major buildings, airports, railroads, power plants, waste treatment facilities, roads, bridges, and irrigation systems.'
+    },
+}
+
+
+
+
+
+
+
+
+
+// 
+     var FutureStats = {
+  "Total": {
+    "Jobs2014": 150539.9,
+    "Jobs2024": 160328.8,
+    "MedianSalary2014": 37040
+  },
+  "Management": {
+    "Jobs2014": 9157.5,
+    "Jobs2024": 9662.9,
+    "MedianSalary2014": 100790
+  },
+  "Business": {
+    "Jobs2014": 7565.3,
+    "Jobs2024": 8197.8,
+    "MedianSalary2014": 66530
+  },
+  "Computer": {
+    "Jobs2014": 4068.3,
+    "Jobs2024": 4599.7,
+    "MedianSalary2014": 82830
+  },
+  "Architecture": {
+    "Jobs2014": 2532.7,
+    "Jobs2024": 2599.9,
+    "MedianSalary2014": 77900
+  },
+  "SocialScience": {
+    "Jobs2014": 1310.4,
+    "Jobs2024": 1408,
+    "MedianSalary2014": 63340
+  },
+  "Community": {
+    "Jobs2014": 2465.7,
+    "Jobs2024": 2723.4,
+    "MedianSalary2014": 42990
+  },
+  "Legal": {
+    "Jobs2014": 1268.2,
+    "Jobs2024": 1332.8,
+    "MedianSalary2014": 79650
+  },
+  "Education": {
+    "Jobs2014": 9216.1,
+    "Jobs2024": 9913.7,
+    "MedianSalary2014": 48000
+  },
+  "Arts": {
+    "Jobs2014": 2624.2,
+    "Jobs2024": 2731.7,
+    "MedianSalary2014": 47190
+  },
+  "Healthcare": {
+    "Jobs2014": 8236.5,
+    "Jobs2024": 9584.6,
+    "MedianSalary2014": 63420
+  },
+  "HealthcareOptions": {
+    "Jobs2014": 4238,
+    "Jobs2024": 5212.2,
+    "MedianSalary2014": 27910
+  },
+  "Protective": {
+    "Jobs2014": 3443.8,
+    "Jobs2024": 3597.7,
+    "MedianSalary2014": 38660
+  },
+  "Food": {
+    "Jobs2014": 12467.6,
+    "Jobs2024": 13280.4,
+    "MedianSalary2014": 20810
+  },
+  "Buildings": {
+    "Jobs2014": 5617.2,
+    "Jobs2024": 5967,
+    "MedianSalary2014": 24700
+  },
+  "Personal": {
+    "Jobs2014": 6006.1,
+    "Jobs2024": 6798.2,
+    "MedianSalary2014": 22710
+  },
+  "Sales": {
+    "Jobs2014": 15423.1,
+    "Jobs2024": 16201.1,
+    "MedianSalary2014": 26590
+  },
+  "Administrative": {
+    "Jobs2014": 22766.1,
+    "Jobs2024": 23232.6,
+    "MedianSalary2014": 34050
+  },
+  "Maintenance": {
+    "Jobs2014": 5680.5,
+    "Jobs2024": 6046,
+    "MedianSalary2014": 43440
+  },
+  "Production": {
+    "Jobs2014": 9230.3,
+    "Jobs2024": 8948.3,
+    "MedianSalary2014": 33130
+  },
+  "Transportation": {
+    "Jobs2014": 9748.5,
+    "Jobs2024": 10215.3,
+    "MedianSalary2014": 30730
+  }
+};
+      google.charts.load('current', {'packages':['corechart', 'bar']});
+      google.charts.setOnLoadCallback(drawChart);
+/*
+"Total": {
+    "Jobs2014": 150539.9,
+    "Jobs2024": 160328.8,
+    "MedianSalary2014": 37040
+  },
+  "Management": {
+    "Jobs2014": 9157.5,
+    "Jobs2024": 9662.9,
+    "MedianSalary2014": 100790
+  },
+  "Business": {
+    "Jobs2014": 7565.3,
+    "Jobs2024": 8197.8,
+    "MedianSalary2014": 66530
+  },
+  "Computer": {
+    "Jobs2014": 4068.3,
+    "Jobs2024": 4599.7,
+    "MedianSalary2014": 82
+  },
+  
+*/
+      function drawChart() {
+        var data = google.visualization.arrayToDataTable([
+          ['Sector', '2014-jobs', '2024-jobs', {role: 'style'}],
+          ['Management', 9157, 9662, 'opacity: 0.7; stroke-width: 4; fill-color: blue'],
+          ['Business', 7565, 8197, 'gold'],
+          ['Computer', 4068, 4599, 'navy']
+        ]);
+        var datatbl = new google.visualization.DataTable();
+      datatbl.addColumn('string', 'Sector');
+      datatbl.addColumn('number', '2014');
+      datatbl.addColumn('number', '2024');
+      var counter = 0;
+      for(var key in FutureStats){
+        counter++;
+        console.log(key);
+        console.log(FutureStats[key].Jobs2014);
+        console.log(FutureStats[key].Jobs2024);
+        if(key !== 'Total' && counter <= 2){console.log("adding rows");
+      datatbl.addRows([[key, FutureStats[key].Jobs2014,FutureStats[key].Jobs2024]]);
+     }
+    }
+        var options = {
+          chart: {
+            title: 'Employment Projections',
+            subtitle: 'BLS.gov : 2014-2024'
+          },
+          bars: 'horizontal'
+          
+          
+        };
+        var chart = new google.charts.Bar(document.getElementById('columnchart_material'));
+        chart.draw(datatbl, google.charts.Bar.convertOptions(options));
+      }
+    </script>
+  </head>
+  <body>
+    <div id="columnchart_material" style="width: 400px; height: 300px;"></div>
+  </body>
+</html>
+
+
