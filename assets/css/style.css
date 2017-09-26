@@ -20,6 +20,7 @@ header {
 #chatBox {
     width: 100%;
     height: 50vw;
+    max-height: 450px;
     overflow-y: scroll;
 }
 
