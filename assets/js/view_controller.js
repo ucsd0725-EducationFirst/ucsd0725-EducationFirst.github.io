@@ -33,7 +33,7 @@ function CardForSchool(school, averages) {
 		$("<p>").text(fPerc + "% Female | " + mPerc + "% Male").appendTo(statsCol);
 	}
 	var withPluses = school.school.name.split(" ").join("+");
-	$.get("http://api.duckduckgo.com/?q=" + withPluses + "&format=json").done(function(json) {
+	$.get("https://api.duckduckgo.com/?q=" + withPluses + "&format=json").done(function(json) {
 		if (JSON.parse(json).Image) {
 			$("<img class='school-logo'>").attr({src: JSON.parse(json).Image}).appendTo(imgCol);
 		}
