@@ -18,17 +18,14 @@
 			<!-- Chat Box and Cards -->
 			<div class="row">
 				<div class="chatbox-box col s12 m6 l4">
-					<div class="chatBox">
-					</div>
-
-					<footer class="page-footer cb-footer">
-						<div class="text-input">
-							<textarea rows="2" style="width:60%;" ></textarea>
-						</div>
-						<div class="waves-effect waves-light black-text cb-send btn">
-							Send<i class="tiny material-icons">send</i>
-						</div>
-					</footer>
+					<div id="chatBox"></div>
+					<hr>
+					<form id="inputForm">
+						<input type="text" id="userInput">
+						<button type="submit" id="submit" class="btn blue white-text right">
+							<i class="tiny material-icons">send</i>
+						</button>
+					</form>
 				</div>
 
 				<div class="col s12 m6 l8">
@@ -63,43 +60,81 @@
 		</div>
 	</footer>
 
-	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+
+	<script src="assets/js/us_states.js" charset="utf-8"></script>
+	<script src="assets/js/chatbot.js" charset="utf-8"></script>
+	<script src="assets/js/chat_controller.js" charset="utf-8"></script>
 	<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
-	<script src="assets/js/test_data.js" charset="utf-8"></script>
 
-	<script type="text/javascript">
-		$(document).ready(function(){
+<script type="text/javascript">
+$(document).ready(function(){
+	$('.modal').modal();
 
-			$('.modal').modal();
+	$(document).on("click", ".uni-card", function() {
+		if ($(this).data("state") === "closed") {
+			$(this).data({state: "open"});
+			$(this).addClass("card-open");
+			$(this).find(".info-div").show();
+			$(this).find(".minimize-card").show();
+		}
+	});
 
-			$(document).on("click", ".uni-card", function() {
-				if ($(this).data("state") === "closed") {
-					$(this).data({state: "open"});
-					$(this).addClass("card-open");
-					$(this).find(".info-div").show();
-					$(this).find(".minimize-card").show();
-				}
-			});
+	$(document).on("click", ".minimize-card", function() {
+		var schoolID = $(this).data("schoolID");
+		var card = $("#school-" + schoolID);
+		card.removeClass("card-open");
+		card.find(".info-div").hide();
+		$(this).hide();
+		// Delay closing card because .uni-card.click() fires after this,
+		// which immediately opens the card again.
+		setTimeout(function() {
+			card.data({state: "closed"});
+		}, 100);
+	});
 
-			$(document).on("click", ".minimize-card", function() {
-				var schoolID = $(this).data("schoolID");
-				var card = $("#school-" + schoolID);
-				card.removeClass("card-open");
-				card.find(".info-div").hide();
-				$(this).hide();
-				// Delay closing card because .uni-card.click() fires after this,
-				// which immediately opens the card again.
-				setTimeout(function() {
-					card.data({state: "closed"});
-				}, 100);
-			});
+	var sc = new Scorecard();
+	var bot = new ChatBot();
+	var cc = new ChatController(bot);
 
-			var sc = new Scorecard();
+	var chatbox = $("#chatBox");
 
+	function DisplayChatbotPrompt() {
+		var prompt = cc.GetNextPrompt();
+		prompt.forEach(function(p) {
+			var bubble = $("<div class='bubble bot green lighten-3'>");
+			bubble.html(p);
+			chatbox.append(bubble);
 		});
-	</script>
+		chatbox[0].scrollTop = chatbox[0].scrollHeight;
+	}
+
+	$("#submit").click(function(e) {
+		e.preventDefault();
+
+		// Get and Reset Input
+		var input = $("#userInput").val().trim();
+		$("#inputForm")[0].reset();
+		if (input.length < 1) { return; }
+
+		// Log Input to Chat Window
+		var bubble = $("<div class='bubble user indigo lighten-4'>");
+		bubble.html(input);
+		chatbox.append(bubble);
+		chatbox[0].scrollTop = chatbox[0].scrollHeight;
+
+		// Query wit.ai
+		cc.HandleInput(input, function() {
+			DisplayChatbotPrompt();
+			console.log(cc)
+		});
+	});
+
+	DisplayChatbotPrompt();
+});
+</script>
 
 
 

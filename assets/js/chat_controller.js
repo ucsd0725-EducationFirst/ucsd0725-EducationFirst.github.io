@@ -89,6 +89,7 @@ var ChatController = function(chatbot, scorecard) {
 
 	this.Consume = function(intents) {
 		console.log(intents);
+		if (intents === undefined) { self.requestClarification = true; return; }
 		switch (self.state) {
 			case "root":
 				if (intents.kind === "location") {
