@@ -1,8 +1,7 @@
 
-var ChatController = function(chatbot, scorecard) {
+var ChatController = function(chatbot) {
 	var self = this;
 	this.chatbot = chatbot;
-	this.scorecard = scorecard;
 	this.currentPath = ["root"];
 	this.context = {};
 	this.state = "root";
@@ -30,15 +29,17 @@ var ChatController = function(chatbot, scorecard) {
 				what: {
 					dynamic: function() {
 						if (self.context["where"] !== undefined) {
-							self.scorecard
-							.byField(self.context["what"])
-							.byState(self.context["where"])
+							new ScorecardQuery()
+							.withFields([self.context["what"]])
+							.inState(self.context["where"])
+							.orderedBy("salary_s_50")
 							.get(self.displaySchools);
 
 							return ["Great! Here are some of the top schools in " + self.context["where"] + " that offer " + self.context["what"]];
 						} else {
-							self.scorecard
-							.byField(self.context["what"])
+							new ScorecardQuery()
+							.withFields([self.context["what"]])
+							.orderedBy("salary_s_50")
 							.get(self.displaySchools);
 
 							return ["OK. Here are some of the top schools that offer degrees in " + self.context["what"]];
@@ -47,8 +48,9 @@ var ChatController = function(chatbot, scorecard) {
 				},
 				dunno: {
 					dynamic: function() {
-						self.scorecard
-						.byState(self.context["where"])
+						new ScorecardQuery()
+						.inState(self.context["where"])
+						.orderedBy("salary_s_50")
 						.get(self.displaySchools);
 
 						return ["OK. Here are some of the top schools in " + self.context["where"]];
@@ -184,16 +186,18 @@ var ChatController = function(chatbot, scorecard) {
 		}
 	};
 
-	self.displaySchools = function(data) {
-		var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; })
-		var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
-		var averages = CalculateAverages(ordered);
+	self.displaySchools = function(schools) {
+		// var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; })
+		// var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
+		var averages = CalculateAverages(schools);
 
-		var count = Math.min(6, ordered.length);
-		for (var i = 0; i < count; i++) {
-			var school = ordered[i];
+		// var count = Math.min(6, ordered.length);
+		// for (var i = 0; i < count; i++) {
+		schools.forEach(function(school) {
+			// var school = ordered[i];
 			var card = CardForSchool(school, averages);
 			$("#university-box").append(card);
-		}
+		})
+		// }
 	};
 };

@@ -1,92 +1,51 @@
-var Scorecard = function() {
-    var config = {
-        apiKey: "AIzaSyBxpTELNwV5kDCAQXTpG-lMzWnIbzcNazs",
-        authDomain: "bentham-endurance.firebaseapp.com",
-        databaseURL: "https://bentham-endurance.firebaseio.com",
-        projectId: "bentham-endurance",
-        storageBucket: "bentham-endurance.appspot.com",
-        messagingSenderId: "305674895801"
-    };
-    firebase.initializeApp(config);
-    this.database = firebase.database();
+var ScorecardQuery = function() {
     var self = this;
+    this.fields = [];
+    this.state = "";
+    this.ordered = "";
+    this.base_url = "https://whispering-tundra-57343.herokuapp.com/v1?";
 
-    this.byField = function(field) {
-        var q = new ScorecardQuery(self.database);
-        q.field = field;
-        return q;
-    }
-
-    this.byState = function(state) {
-        var q = new ScorecardQuery(self.database);
-        q.state = state;
-        return q;
-    }
-}
-
-var ScorecardQuery = function(database) {
-    var self = this;
-    this.database = database;
-
-    this.byField = function(field) {
-        self.field = field;
+    this.withFields = function(fields) {
+        self.fields = fields;
         return self;
     }
 
-    this.byState = function(state) {
+    this.inState = function(state) {
         self.state = state;
         return self;
     }
 
+    this.orderedBy = function(column) {
+        self.ordered = column;
+        return self;
+    }
+
     this.get = function(callback) {
-        function getSchools(schools, callback) {
-            var numSchools = Object.keys(schools).length;
-            for (var id in schools) {
-               self.database.ref("/schools")
-                            .child(id)
-                            .once("value")
-                            .then(function(snapshot) {
-                                schools[snapshot.key].school = snapshot.val();
-                                numSchools--;
-                            });
-            }
-            var loop = setInterval(function() {
-                if (numSchools < 1) {
-                    clearInterval(loop);
-                    callback(schools);
-                }
-            }, 100);
+        var url = self.base_url;
+        if (self.fields.length > 0) {
+            console.log(self.fields)
+            url += "&fields=" + self.fields.join(",");
+        }
+        if (self.state.length > 0) {
+            url += "&state=" + self.state.toUpperCase();
+        }
+        if (self.ordered.length > 0) {
+            url += "&ordered=" + self.ordered;
         }
 
-        if (self.field && self.state) {
-            self.database.ref("/fields")
-                         .child(self.field)
-                         .orderByChild("state")
-                         .equalTo(self.state)
-                         .once("value")
-                         .then(function(snapshot) {
-                             getSchools(snapshot.val(), callback);
-                         });
-        } else if (self.field) {
-            self.database.ref("/fields")
-                         .child(self.field)
-                         .once("value")
-                         .then(function(snapshot) {
-                             getSchools(snapshot.val(), callback);
-                         });
-        } else if (self.state) {
-            self.database.ref("/schools")
-                         .orderByChild("state")
-                         .equalTo(self.state)
-                         .once("value")
-                         .then(function(snapshot) {
-                             getSchools(snapshot.val(), callback);
-                         });
-        } else {
-            throw new Error("ScorecardQuery error: not enough parameters");
-        }
+        $.get(url)
+        .done(function(json) {
+            if (json.error) {
+                console.error("ScorecardQuery error: malformed URL " + url);
+            } else {
+                callback(json.results);
+            }
+        })
+        .fail(function(err) {
+            console.error(err);
+        });
     }
-}
+};
 
 function FilterChildrenByPropertyPath(object, path, filter) {
     var results = {};
@@ -136,13 +95,13 @@ function CalculateAverages(schools) {
     };
     for (var i = 0; i < schools.length; i++) {
         var s = schools[i];
-        if (s.school.tuition.in_state > 0) {
+        if (s.tuition.in_state > 0) {
             averages["in-state-tuition"].count++;
-            averages["in-state-tuition"].sum += s.school.tuition.in_state;
+            averages["in-state-tuition"].sum += s.tuition.in_state;
         }
-        if (s.school.tuition.out_state > 0) {
+        if (s.tuition.out_state > 0) {
             averages["out-state-tuition"].count++;
-            averages["out-state-tuition"].sum += s.school.tuition.out_state;
+            averages["out-state-tuition"].sum += s.tuition.out_state;
         }
     }
     for (var key in averages) {

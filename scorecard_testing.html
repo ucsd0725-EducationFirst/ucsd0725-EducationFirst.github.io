@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>Scorecard Testing</title>
+    </head>
+    <body>
+        <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="assets/js/scorecard_api.js" charset="utf-8"></script>
+        <script type="text/javascript">
+            var sc = new ScorecardQuery()
+            sc.inState("CA").withFields(["computer"]).orderedBy("salary_s_50").get(function(results) {
+                results.forEach(function(r) {
+                    console.log(r.name, r.salary.starting)
+                })
+            })
+        </script>
+    </body>
+</html>

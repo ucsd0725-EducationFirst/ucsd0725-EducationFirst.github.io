@@ -61,7 +61,7 @@
 	</footer>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
+	<!-- <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
 	<script src="assets/js/jquery.flot.min.js" charset="utf-8"></script>
@@ -99,9 +99,8 @@ $(document).ready(function(){
 		}, 100);
 	});
 
-	var sc = new Scorecard();
 	var bot = new ChatBot();
-	var cc = new ChatController(bot, sc);
+	var cc = new ChatController(bot);
 
 	var chatbox = $("#chatBox");
 

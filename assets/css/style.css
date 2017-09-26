@@ -110,6 +110,11 @@ background: transparent;
 
 .uni-card.card-open {
 	width: calc(100% - 20px);
+    cursor: auto;
+}
+
+.minimize-card {
+    cursor: pointer;
 }
 
 .school-logo {
