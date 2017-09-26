@@ -1,7 +1,13 @@
+header {
+    padding: 6px 0;
+}
+
 .chatBox{
+	border: 1px solid #c9c9c9;
 	position: relative;
 	width: 100%;
 	height: 60%;
+	min-height: 300px;
 	overflow-y: scroll;
 	padding-right: 15px;
 	padding-left:15px;
@@ -48,10 +54,10 @@ background: transparent;
 	margin-left: auto;
 }
 
-.main-container{
+/*.main-container{
 	width: 90%;
 	height: 100%;
-}
+}*/
 
 .text-input{
 	width: 50%;
@@ -68,6 +74,7 @@ background: transparent;
 .uni-card {
 	display: inline-grid;
 	width: calc(50% - 20px);
+	min-width: 250px;
 	margin-right: 10px;
 	margin-bottom: 10px;
 }
