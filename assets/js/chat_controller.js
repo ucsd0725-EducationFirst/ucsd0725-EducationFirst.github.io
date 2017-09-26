@@ -169,7 +169,7 @@ var ChatController = function(chatbot, scorecard) {
 					self.currentPath.push("what");
 					self.state = "where.what";
 				} else if (intents.kind === "response") {
-					if (intents.value === "unsure" || intents.value === "indifferent") {
+					if (intents.value === "unsure" || intents.value === "indifferent" || intents.value === "negative") {
 						// User unsure/indifferent what they want to study
 						self.currentPath.push("dunno");
 						self.state = "where.dunno";
