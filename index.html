@@ -64,9 +64,13 @@
 	<script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
+	<script src="assets/js/jquery.flot.min.js" charset="utf-8"></script>
+	<script src="assets/js/jquery.flot.categories.min.js" charset="utf-8"></script>
+
 	<script src="assets/js/us_states.js" charset="utf-8"></script>
 	<script src="assets/js/chatbot.js" charset="utf-8"></script>
 	<script src="assets/js/chat_controller.js" charset="utf-8"></script>
+	<script src="assets/js/view_controller.js" charset="utf-8"></script>
 	<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
 
 <script type="text/javascript">
@@ -77,7 +81,7 @@ $(document).ready(function(){
 		if ($(this).data("state") === "closed") {
 			$(this).data({state: "open"});
 			$(this).addClass("card-open");
-			$(this).find(".info-div").show();
+			$(this).find(".school-info").show();
 			$(this).find(".minimize-card").show();
 		}
 	});
@@ -86,7 +90,7 @@ $(document).ready(function(){
 		var schoolID = $(this).data("schoolID");
 		var card = $("#school-" + schoolID);
 		card.removeClass("card-open");
-		card.find(".info-div").hide();
+		card.find(".school-info").hide();
 		$(this).hide();
 		// Delay closing card because .uni-card.click() fires after this,
 		// which immediately opens the card again.
@@ -97,7 +101,7 @@ $(document).ready(function(){
 
 	var sc = new Scorecard();
 	var bot = new ChatBot();
-	var cc = new ChatController(bot);
+	var cc = new ChatController(bot, sc);
 
 	var chatbox = $("#chatBox");
 
