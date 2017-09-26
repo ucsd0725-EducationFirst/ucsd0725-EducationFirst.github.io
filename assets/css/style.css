@@ -1,10 +1,49 @@
-.chatBox{
-	position: relative;
-	width: 100%;
-	height: 60%;
-	overflow-y: scroll;
-	padding-right: 15px;
-	padding-left:15px;
+/* Sticky Footer */
+body {
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+}
+main { flex: 1 0 auto; }
+/* Sticky Footer */
+
+header {
+    padding: 6px 0;
+}
+
+.chatbox-box {
+    border: 1px solid #c9c9c9;
+    position: relative;
+    margin-top: 20px;
+}
+
+#chatBox {
+    width: 100%;
+    height: 50vw;
+    max-height: 450px;
+    overflow-y: scroll;
+}
+
+.bubble {
+    border-radius: 30px;
+    padding: 10px 20px;
+    margin: 10px auto;
+}
+
+.bubble.bot {
+    margin-right: 20%;
+}
+
+.bubble.user {
+    margin-left: 20%;
+}
+
+#inputForm {
+    margin-top: 10px;
+}
+
+#userInput {
+    width: calc(95% - 80px);
 }
 
 html ::-webkit-scrollbar {
@@ -48,11 +87,6 @@ background: transparent;
 	margin-left: auto;
 }
 
-.main-container{
-	width: 90%;
-	height: 100%;
-}
-
 .text-input{
 	width: 50%;
 	margin-left: auto;
@@ -68,6 +102,7 @@ background: transparent;
 .uni-card {
 	display: inline-grid;
 	width: calc(50% - 20px);
+	min-width: 250px;
 	margin-right: 10px;
 	margin-bottom: 10px;
 	cursor: pointer;
