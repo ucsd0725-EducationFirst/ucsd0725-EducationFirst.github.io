@@ -2,6 +2,7 @@ var USStatesMap = {
 	"alabama": "AL",
 	"alaska": "AK",
 	"arizona": "AZ",
+	"arkansas": "AR",
 	"california": "CA",
 	"colorado": "CO",
 	"connecticut": "CT",
@@ -52,6 +53,7 @@ var USStatesMap = {
 var InverseUSStatesMap = {
 	"AL": "alabama",
 	"AK": "alaska",
+	"AR": "arkansas",
 	"AZ": "arizona",
 	"CA": "california",
 	"CO": "colorado",
