@@ -101,7 +101,7 @@ background: transparent;
 
 .uni-card {
 	display: inline-grid;
-	width: calc(50% - 20px);
+	width: calc(50% - 15px);
 	min-width: 250px;
 	margin-right: 10px;
 	margin-bottom: 10px;

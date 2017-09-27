@@ -111,14 +111,17 @@ $(document).ready(function(){
 	$(document).on("click", ".minimize-card", function() {
 		var schoolID = $(this).data("schoolID");
 		var card = $("#school-" + schoolID);
-		card.removeClass("card-open");
-		card.find(".school-info").hide();
-		$(this).html("add");
-		// Delay closing card because .uni-card.click() fires after this,
-		// which immediately opens the card again.
-		setTimeout(function() {
-			card.data({state: "closed"});
-		}, 100);
+		// Stop things from firing twice, see note below
+		if (card.data("state") === "open") {
+			card.removeClass("card-open");
+			card.find(".school-info").hide();
+			$(this).html("add");
+			// Delay closing card because .uni-card.click() fires after this,
+			// which immediately opens the card again.
+			setTimeout(function() {
+				card.data({state: "closed"});
+			}, 100);
+		}
 	});
 
 	$("#colophonLink").click(function() {
