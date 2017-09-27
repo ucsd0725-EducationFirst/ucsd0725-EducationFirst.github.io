@@ -24,6 +24,7 @@ var ChatController = function(chatbot) {
 				},
 				dunno: {
 					dynamic: function() {
+						// TODO show hottest jobs data
 						return ["That's OK! Here are some suggestions for the top jobs and industries right now."];
 					}
 				}
@@ -43,14 +44,16 @@ var ChatController = function(chatbot) {
 							.get(self.displaySchools);
 
 							var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
-							return ["Great! I will look for schools in " + state + " that offer " + self.context["what"]];
+							var industry = IndustryNames[self.context["what"]];
+							return ["Great! I will look for schools in " + state + " that offer " + industry + "."];
 						} else {
 							new ScorecardQuery()
 							.withFields([self.context["what"]])
 							.orderedBy("salary_s_50")
 							.get(self.displaySchools);
 
-							return ["Great! Here are some of the top schools that offer degrees in " + self.context["what"]];
+							var industry = IndustryNames[self.context["what"]];
+							return ["Great! Here are some of the top schools that offer degrees in " + industry + "."];
 						}
 					}
 				},
@@ -61,7 +64,8 @@ var ChatController = function(chatbot) {
 						.orderedBy("salary_s_50")
 						.get(self.displaySchools);
 
-						return ["That's OK! Here are some of the top schools in " + self.context["where"]];
+						var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
+						return ["That's OK! Here are some of the top schools in " + state + "."];
 					}
 				}
 			}
@@ -199,16 +203,30 @@ var ChatController = function(chatbot) {
 		}
 	};
 
-	self.displaySchools = function(schools) {
-		var averages = CalculateAverages(schools);
+	this.displaySchools = function(schools) {
+		if (schools !== undefined) {
+			self.averages = CalculateAverages(schools);
+			self.schools = schools;
+			self.schoolIndex = 6;
+		} else {
+			self.schoolIndex += 6;
+			$("#university-box").empty();
+		}
 
-		// var count = Math.min(6, ordered.length);
-		// for (var i = 0; i < count; i++) {
-		schools.forEach(function(school) {
-			// var school = ordered[i];
-			var card = CardForSchool(school, averages);
+		var count = Math.min(self.schoolIndex, self.schools.length);
+		for (var i = 0; i < count; i++) {
+			var school = self.schools[i];
+			var card = CardForSchool(school, self.averages);
 			$("#university-box").append(card);
-		})
-		// }
+		}
+		if (count < self.schools.length) {
+			var row = $("<div class='row center-align'>");
+			var showMore = $("<a href='#!' class='btn-flat waves-effect waves-grey btn-flat'>").text("Show More");
+			showMore.click(function() {
+				self.displaySchools();
+			});
+			row.append($("<br>")).append(showMore);
+			$("#university-box").append(row);
+		}
 	};
 };
