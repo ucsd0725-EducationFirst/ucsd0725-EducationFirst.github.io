@@ -9,6 +9,9 @@
 	</head>
 	<body>
 		<div class="container">
+			<div class="chart-container" style="position: relative; height:0px; width:200px;">
+  				<!-- <canvas id="canvas" ></canvas> -->
+ 			</div>
 		</div>
 
 	<script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
@@ -18,6 +21,7 @@
 	<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
 	<script src="assets/js/test_data.js" charset="utf-8"></script>
 	<script src="assets/js/view_controller.js" charset="utf-8"></script>
+	<script src ="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.0/Chart.js"></script>
 	<script type="text/javascript">
 		var data = TestData;
 		var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; });
@@ -107,30 +111,44 @@
 			}
 			if (school.school.tuition.in_state > 0) {
 				var chartID = "tuition-" + school.key;
-				$("<div class='card-chart'>").attr({id: chartID}).appendTo(tuitionCol);
+				$("<canvas>").attr({id: 'canvas'}).appendTo(tuitionCol);
 				// Look at http://www.pikemere.co.uk/blog/tutorial-flot-how-to-create-bar-charts/
 				// for potentiall better solution
 				setTimeout(function(chartID, tuition, averages) {
-					var s = [
-						["In State", tuition.in_state],
-						["(Avg)", 0],
-						["Out of State", tuition.out_state],
-						["(Avg) ", 0]
-					];
-					var a = [
-						["In State", 0],
-						["(Avg)", averages["in-state-tuition"].average],
-						["Out of State", 0],
-						["(Avg) ", averages["out-state-tuition"].average]
-					];
-					$.plot("#" + chartID, [s, a], {
-						series: {
-							color: "green",
-							bars: {show: true, align: "center"}
+
+					var ct = $("#canvas")[0].getContext('2d');
+					var chart = new Chart(ct, {
+						type: 'bar',
+						data: {
+							labels: ["In State", "In State (Avg)", "Out of State", "Out of State (Avg)"],
+							datasets: [{
+								data: [
+									tuition.in_state, 
+									averages["in-state-tuition"].average, 
+									tuition.out_state,
+									averages["out-state-tuition"].average
+								],
+								backgroundColor: [
+									'rgba(226, 82, 56, 0.5)',
+									'rgba(66, 134, 244, 0.5)',
+									'rgba(198, 196, 81, 0.5)',
+									'rgba(40, 214, 55, 0.5)'
+								],
+								borderColor: [
+					                'rgba(255,99,132,1)',
+					                'rgba(54, 162, 235, 1)',
+					                'rgba(255, 206, 86, 1)',
+					                'rgba(34, 117, 11, 0.5)'
+                            	],
+            						borderWidth: 1.5
+							}]
 						},
-						xaxis: {mode: "categories", tickLength: 0},
-						yaxis: {axisLabel: "Tuition Cost ($)"}
+						options: {
+							legend: false,
+						}
 					});
+
+
 				}, 100, chartID, school.school.tuition, averages);
 			} else {
 				$("<p>").text("Tuition Data Unavailable").appendTo(tuitionCol);
@@ -148,15 +166,53 @@
 					[7, Math.floor(school.school.repayment["7_yr"] * 100)]
 				];
 				var chartID = "repayment-" + school.key;
-				$("<div class='card-chart'>").attr({id: chartID}).appendTo(repaymentCol);
+				$("<canvas>").attr({id: 'canvas2'}).appendTo(repaymentCol);
 				setTimeout(function(chartID, repayment) {
-					$.plot("#" + chartID, [{
-						data: repayment,
-						lines: {show: true}
-					}], {
-						xaxis: {min: 0},
-						yaxis: {min: 50, max: 100}
+					
+					console.log(repayment);
+					var ct = $("#canvas2")[0].getContext('2d');
+					var chart = new Chart(ct, {
+						type: 'line',
+						data: {
+							labels: ["1", "3", "5", "7"],
+							datasets: [{
+								data: [
+								repayment[0][1], 
+								repayment[1][1], 
+								repayment[2][1],
+								repayment[3][1]  
+								],
+								backgroundColor: [
+									'rgba(214, 249, 117, 0.7)',
+								],
+								borderColor: [
+					                'rgba(158, 206, 24, 0.7)',
+                            	],
+            					borderWidth: 1.5
+							}]
+						},
+						options: {
+							legend: {
+								display: false
+							},
+					        scales: {
+					            yAxes: [{
+							      scaleLabel: {
+							        display: true,
+							        labelString: 'y-label'
+							      }
+					    		}],
+					    		xAxes: [{
+							      scaleLabel: {
+							        display: true,
+							        labelString: 'years'
+							      }
+					    		}]
+					        }
+    					}
 					});
+
+
 				}, 100, chartID, data);
 			} else {
 				$("<p>").text("Repayment Data Unavailable").appendTo(repaymentCol);
