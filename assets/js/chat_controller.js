@@ -10,24 +10,29 @@ var ChatController = function(chatbot) {
 	this.reset = function() {
 		this.currentPath = ["root"];
 		this.context = {};
+		this.state = "root";
+		this.requestClarification = false;
 	};
 
 	this.tree = {
 		root: {
 			prompt: ["Hello! I want to help you choose a university.", "In which state do you want to go to college?", "It's OK if you're not sure or don't care."],
 			dunno: {
-				prompt: ["OK. Do you know what you want to study?"],
+				prompt: ["Do you know what you want to study?"],
 				what: {
 					jump: ["root", "where", "what"]
 				},
 				dunno: {
 					dynamic: function() {
-						return ["OK. Here are some suggestions for the top jobs and industries right now."];
+						return ["That's OK! Here are some suggestions for the top jobs and industries right now."];
 					}
 				}
 			},
 			where: {
-				prompt: ["OK. Do you know what you want to study?"],
+				dynamic: function() {
+					var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
+					return ["OK, I will look for schools in " + state + ".", "Do you know what you want to study?"];
+				},
 				what: {
 					dynamic: function() {
 						if (self.context["where"] !== undefined) {
@@ -37,14 +42,15 @@ var ChatController = function(chatbot) {
 							.orderedBy("salary_s_50")
 							.get(self.displaySchools);
 
-							return ["Great! Here are some of the top schools in " + self.context["where"] + " that offer " + self.context["what"]];
+							var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
+							return ["Great! I will look for schools in " + state + " that offer " + self.context["what"]];
 						} else {
 							new ScorecardQuery()
 							.withFields([self.context["what"]])
 							.orderedBy("salary_s_50")
 							.get(self.displaySchools);
 
-							return ["OK. Here are some of the top schools that offer degrees in " + self.context["what"]];
+							return ["Great! Here are some of the top schools that offer degrees in " + self.context["what"]];
 						}
 					}
 				},
@@ -55,7 +61,7 @@ var ChatController = function(chatbot) {
 						.orderedBy("salary_s_50")
 						.get(self.displaySchools);
 
-						return ["OK. Here are some of the top schools in " + self.context["where"]];
+						return ["That's OK! Here are some of the top schools in " + self.context["where"]];
 					}
 				}
 			}
@@ -66,11 +72,16 @@ var ChatController = function(chatbot) {
 		if (self.requestClarification) {
 			self.requestClarification = false;
 			var clarification = ["I'm sorry, I don't understand."];
+			console.log(self.state);
 			switch (self.state) {
 				case "root":
 					clarification.push("Please enter a US state name or abbreviation to search for colleges.");
 					return clarification;
 					break;
+				case "where":
+					clarification.push("Do you know what you want to study?");
+					clarification.push("It's OK if you're not sure or don't know.");
+					return clarification;
 				default:
 					break;
 			}

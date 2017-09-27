@@ -124,3 +124,7 @@ function CardForSchool(school, averages) {
 
 	return card;
 }
+
+function Capitalize(w) {
+	return w[0].toUpperCase() + w.slice(1);
+}
