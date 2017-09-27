@@ -46,31 +46,51 @@
 		</div>
 	</main>
 
+	<div class="modal" id="colophon">
+		<div class="modal-content">
+			<p>
+				Education First was created by
+				<a href="https://github.com/priteshkumar" target="_blank">Pritesh K,</a>
+				<a href="https://github.com/JonathanP97" target="_blank">Jonathan P,</a>
+				<a href="https://github.com/vanmax75" target="_blank">Zakari S,</a>
+				<a href="https://github.com/quells" target="_blank">and Kai W</a>
+				using data from the <a href="https://collegescorecard.ed.gov" target="_blank">College Scorecard Database</a>
+				collected by the <a href="https://www.ed.gov" target="_blank">US Department of Education.</a>
+				Natural language processing was done with <a href="https://wit.ai" target="_blank">wit.ai.</a>
+				The site is styled using the <a href="http://materializecss.com" target="_blank">Materialize</a> CSS framework.
+			</p>
+		</div>
+		<div class="modal-footer">
+			<a href="#!" class="modal-action modal-close waves-effect waves-grey btn-flat">Dismiss</a>
+		</div>
+	</div>
+
 	<footer class="page-footer">
 		<div class="container grey-text text-lighten-3">
 			<h5>More Information to Explore</h5>
-			<p>Bureau of Labor Statistics</p>
+			<p><a href="https://www.bls.gov" target="_blank" class="grey-text text-lighten-4">Bureau of Labor Statistics</a></p>
+			<p><a href="https://collegescorecard.ed.gov" target="_blank" class="grey-text text-lighten-4">College Scorecard</a></p>
 			<br>
 		</div>
 		<div class="footer-copyright">
 			<div class="container">
 				&copy; 2017
-				<a href="#" class="grey-text text-lighten-4 right">Colophon</a>
+				<a href="#!" id="colophonLink" class="grey-text text-lighten-4 right">Colophon</a>
 			</div>
 		</div>
 	</footer>
 
-	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
-	<script src="assets/js/jquery.flot.min.js" charset="utf-8"></script>
-	<script src="assets/js/jquery.flot.categories.min.js" charset="utf-8"></script>
+<script src="assets/js/jquery.flot.min.js" charset="utf-8"></script>
+<script src="assets/js/jquery.flot.categories.min.js" charset="utf-8"></script>
 
-	<script src="assets/js/us_states.js" charset="utf-8"></script>
-	<script src="assets/js/chatbot.js" charset="utf-8"></script>
-	<script src="assets/js/chat_controller.js" charset="utf-8"></script>
-	<script src="assets/js/view_controller.js" charset="utf-8"></script>
-	<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
+<script src="assets/js/us_states.js" charset="utf-8"></script>
+<script src="assets/js/chatbot.js" charset="utf-8"></script>
+<script src="assets/js/chat_controller.js" charset="utf-8"></script>
+<script src="assets/js/view_controller.js" charset="utf-8"></script>
+<script src="assets/js/scorecard_api.js" charset="utf-8"></script>
 
 <script type="text/javascript">
 $(document).ready(function(){
@@ -96,6 +116,10 @@ $(document).ready(function(){
 		setTimeout(function() {
 			card.data({state: "closed"});
 		}, 100);
+	});
+
+	$("#colophonLink").click(function() {
+		$("#colophon").modal("open");
 	});
 
 	var bot = new ChatBot();
