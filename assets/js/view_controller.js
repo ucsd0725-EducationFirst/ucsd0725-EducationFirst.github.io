@@ -1,5 +1,5 @@
 function CardForSchool(school, averages) {
-	var card = $("<div class='card uni-card'>").attr({id: "school-" + school.key}).data({state: "closed"});
+	var card = $("<div class='card uni-card hoverable'>").attr({id: "school-" + school.key}).data({state: "closed"});
 	var cardContent = $("<div class='card-content'>").appendTo(card);
 
 	var minimize = $("<i>");
