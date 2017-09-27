@@ -31,8 +31,13 @@ function CardForSchool(school, averages) {
 	}
 	var withPluses = school.name.split(" ").join("+");
 	$.get("https://api.duckduckgo.com/?q=" + withPluses + "&format=json").done(function(json) {
-		if (JSON.parse(json).Image) {
-			$("<img class='school-logo'>").attr({src: JSON.parse(json).Image}).appendTo(imgCol);
+		try {
+			json = JSON.parse(json);
+			if (json.Image !== undefined && json.Image !== null) {
+				$("<img class='school-logo'>").attr({src: json.Image}).appendTo(imgCol);
+			}
+		} catch (err) {
+			console.log(err);
 		}
 	});
 
