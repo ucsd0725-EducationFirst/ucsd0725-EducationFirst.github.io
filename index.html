@@ -61,7 +61,6 @@
 	</footer>
 
 	<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
-	<!-- <script src="https://www.gstatic.com/firebasejs/4.3.1/firebase.js"></script> -->
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
 
 	<script src="assets/js/jquery.flot.min.js" charset="utf-8"></script>
@@ -82,7 +81,7 @@ $(document).ready(function(){
 			$(this).data({state: "open"});
 			$(this).addClass("card-open");
 			$(this).find(".school-info").show();
-			$(this).find(".minimize-card").show();
+			$(this).find(".minimize-card").html("remove");
 		}
 	});
 
@@ -91,7 +90,7 @@ $(document).ready(function(){
 		var card = $("#school-" + schoolID);
 		card.removeClass("card-open");
 		card.find(".school-info").hide();
-		$(this).hide();
+		$(this).html("add");
 		// Delay closing card because .uni-card.click() fires after this,
 		// which immediately opens the card again.
 		setTimeout(function() {

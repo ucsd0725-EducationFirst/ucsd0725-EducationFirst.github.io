@@ -1,14 +1,11 @@
 function CardForSchool(school, averages) {
-	// console.log(school);
 	var card = $("<div class='card uni-card'>").attr({id: "school-" + school.key}).data({state: "closed"});
-	// card.addClass("card-open") // debug
 	var cardContent = $("<div class='card-content'>").appendTo(card);
 
 	var minimize = $("<i>");
 	minimize.addClass("material-icons right minimize-card");
-	minimize.html('remove');
+	minimize.html('add');
 	minimize.data({schoolID: school.key});
-	minimize.hide();
 
 	var schoolName = $("<span class='school-name card-title'>").text(school.name);
 	var loc = school.location.city + ", " + school.location.state;

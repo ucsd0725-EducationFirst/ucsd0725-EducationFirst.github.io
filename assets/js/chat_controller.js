@@ -21,7 +21,9 @@ var ChatController = function(chatbot) {
 					jump: ["root", "where", "what"]
 				},
 				dunno: {
-					prompt: ["OK. Here are some suggestions for the top jobs and industries right now.", "<a href='#'>Click here</a>"]
+					dynamic: function() {
+						return ["OK. Here are some suggestions for the top jobs and industries right now."];
+					}
 				}
 			},
 			where: {
@@ -187,8 +189,6 @@ var ChatController = function(chatbot) {
 	};
 
 	self.displaySchools = function(schools) {
-		// var filtered = FilterChildrenByPropertyPath(data, ["programs", "bachelors"], function(x) { return x > 0.5; })
-		// var ordered = OrderChildrenByPropertyPath(filtered, ["school", "salary", "eventual", "50"]);
 		var averages = CalculateAverages(schools);
 
 		// var count = Math.min(6, ordered.length);
