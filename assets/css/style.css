@@ -54,6 +54,10 @@ h1 {
 	width: calc(95% - 80px);
 }
 
+#submit {
+	margin-top: 6px;
+}
+
 html ::-webkit-scrollbar {
 width: 0px;
 background: transparent;
