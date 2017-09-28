@@ -209,7 +209,7 @@ function CardForSchool(school, averages) {
 							labelString: 'Completed Repayments'
 						},
 						ticks: {
-							min: 50,
+							min: 0,
 							max: 100,
 							callback: function(value, index, values) {
 								return value + "%";
@@ -369,6 +369,99 @@ function CardForSchool(school, averages) {
 		schoolInfo
 	].forEach(function(element) {
 		cardContent.append(element);
+	});
+
+	return card;
+}
+
+function CardForTopMajor(major) {
+	var card = $("<div class='card uni-card hoverable card-open'>");
+	var cardContent = $("<div class='card-content'>").appendTo(card);
+
+	var majorName = $("<h5>").appendTo(cardContent);
+	var majorLink = $("<a href='#!' class='major-link'>").text(major.Name).data({"majorcode": major.Major}).appendTo(majorName);
+	var nameWithUnderscores = major.Name.split(" ").join("_");
+
+	var statsRow = $("<div class='row'>").appendTo(cardContent);
+	var salaryCol = $("<div class='col s6'>").appendTo(statsRow);
+	var employCol = $("<div class='col s6'>").appendTo(statsRow);
+
+	$("<span class='card-title'>").text("Starting Salary").appendTo(salaryCol);
+	var salaryChartID = "salary-chart-" + nameWithUnderscores;
+	var salaryChart = $("<canvas class='card-chart'>").attr({id: salaryChartID}).appendTo(salaryCol);
+	var salaryCtx = salaryChart[0].getContext("2d");
+	new Chart(salaryCtx, {
+		type: "horizontalBar",
+		data: {
+			datasets: [{
+				data: [major.StartSalary],
+				backgroundColor: ['rgba(40, 214, 55, 0.5)'],
+				borderColor: ['rgba(34, 117, 11, 0.5)'],
+				borderWidth: 1.5
+			}]
+		},
+		options: {
+			legend: false,
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: false
+					}
+				}],
+				xAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: "Starting Salary"
+					},
+					ticks: {
+						min: 0,
+						max: 80000,
+						callback: function(value, index, values) {
+							return "$" + value;
+						}
+					}
+				}]
+			}
+		}
+	});
+
+	$("<span class='card-title'>").text("Employment Rate").appendTo(employCol);
+	var employChartID = "employ-chart-" + nameWithUnderscores;
+	var employChart = $("<canvas class='card-chart'>").attr({id: employChartID}).appendTo(employCol);
+	var employCtx = employChart[0].getContext("2d");
+	new Chart(employCtx, {
+		type: "horizontalBar",
+		data: {
+			datasets: [{
+				data: [major.EW6M],
+				backgroundColor: ['rgba(66, 134, 244, 0.5)'],
+				borderColor: ['rgba(54, 162, 235, 1)'],
+				borderWidth: 1.5
+			}]
+		},
+		options: {
+			legend: false,
+			scales: {
+				yAxes: [{
+					scaleLabel: {
+						display: false
+					}
+				}],
+				xAxes: [{
+					scaleLabel: {
+						display: true,
+						labelString: "Employment Rate 6 Months After Graduation"
+					},
+					ticks: {
+						min: 0,
+						max: 80,
+						callback: function(value, index, values) {
+							return value + "%";
+						}
+					}
+				}]
+			}
+		}
 	});
 
 	return card;

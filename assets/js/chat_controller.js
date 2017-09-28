@@ -30,8 +30,8 @@ var ChatController = function(chatbot) {
 				},
 				dunno: {
 					dynamic: function() {
-						// TODO show hottest jobs data
-						return ["Here are some suggestions for the top jobs and industries right now."];
+						self.showTopMajors();
+						return ["Here are some of the top majors right now."];
 					}
 				}
 			},
@@ -56,9 +56,8 @@ var ChatController = function(chatbot) {
 				},
 				dunno: {
 					dynamic: function() {
-						self.getSchools();
-						var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
-						return ["Here are some of the top schools in " + state + "."];
+						self.showTopMajors();
+						return ["Here are some of the top majors right now."];
 					}
 				}
 			}
@@ -84,12 +83,19 @@ var ChatController = function(chatbot) {
 				.withFields([self.context.what])
 				.get(self.displaySchools);
 			} else {
-				// TODO show jobs
-				$("#university-box").empty();
 				self.schools = [];
-				$("#loadingSpinner").hide();
+				self.showTopMajors();
 			}
 		}
+	}
+
+	this.showTopMajors = function() {
+		$("#loadingSpinner").hide();
+		$("#university-box").empty();
+		$("#search-settings").hide();
+		HotCollegeMajors.forEach(function(m) {
+			$("#university-box").append(CardForTopMajor(m));
+		});
 	}
 
 	this.GetNextPrompt = function() {
@@ -220,7 +226,7 @@ var ChatController = function(chatbot) {
 					self.state = "dunno.what";
 					self.addTag(self.context["what"], "what");
 				} else if (intents.kind === "response") {
-					if (intents.value === "unsure" || intents.value === "indifferent") {
+					if (intents.value === "unsure" || intents.value === "indifferent" || intents.value === "negative") {
 						// User unsure/indifferent what they want to study
 						self.currentPath.push("dunno");
 						self.state = "dunno.dunno";
@@ -282,6 +288,7 @@ var ChatController = function(chatbot) {
 	this.displaySchools = function(schools) {
 		$("#loadingSpinner").hide();
 		$("#university-box").empty();
+		$("#search-settings").show();
 		if (schools !== undefined) {
 			self.averages = CalculateAverages(schools);
 			self.schools = schools;

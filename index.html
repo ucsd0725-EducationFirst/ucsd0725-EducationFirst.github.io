@@ -58,14 +58,14 @@
 			</div>
 
 			<!--EMPLOYMENT PROJECTION 2024................ -->
-			<div class= "row">
+			<!-- <div class= "row">
 				<div class="card-panel small teal">
 					<img width='200 px' height="154px" src="assets/images/bls2014.png">
 						<span class="title white-text">
 						(var = Category) Employment Projection 2024
 						</span>
 				</div>
-			</div>
+			</div> -->
 			<!--End Employment projection..................-->
 		</div>
 	</main>
@@ -112,6 +112,7 @@
 
 <script src="assets/js/us_states.js" charset="utf-8"></script>
 <script src="assets/js/industries.js" charset="utf-8"></script>
+<script src="assets/js/hot_majors.js" charset="utf-8"></script>
 
 <script src="assets/js/chatbot.js" charset="utf-8"></script>
 <script src="assets/js/chat_controller.js" charset="utf-8"></script>
@@ -153,17 +154,33 @@ $(document).ready(function(){
 		}
 	});
 
+	$(document).on("click", ".major-link", function() {
+		var major = $(this).data("majorcode");
+		$("#university-box").empty();
+		$("#loadingSpinner").show();
+		cc.context.what = major;
+		cc.currentPath = ["root", "where", "what"];
+		cc.state = "where.what";
+		cc.addTag(major, "what");
+		cc.getSchools();
+	})
+
 	$(document).on("click", ".chip > .close", function() {
 		if ($(this).hasClass("context-where")) {
 			delete cc.context["where"];
 			cc.getSchools();
-			return;
-		}
-		if ($(this).hasClass("context-what")) {
+		} else if ($(this).hasClass("context-what")) {
 			delete cc.context["what"];
 			cc.getSchools();
-			return;
 		}
+		console.log("closing")
+		setTimeout(function() {
+			console.log("majors")
+			if ($(".chip").length < 1) {
+				DisplayChatbotPrompt(["Here are some of the top majors right now."])
+				cc.showTopMajors();
+			}
+		}, 500)
 	});
 
 	$(document).on("click", "#school-sorting > li > a", function() {
@@ -180,8 +197,8 @@ $(document).ready(function(){
 
 	var chatbox = $("#chatBox");
 
-	function DisplayChatbotPrompt() {
-		var prompt = cc.GetNextPrompt();
+	function DisplayChatbotPrompt(prompts) {
+		var prompt = prompts || cc.GetNextPrompt();
 		prompt.forEach(function(p) {
 			var bubble = $("<div class='bubble bot green lighten-3'>");
 			bubble.html(p);
