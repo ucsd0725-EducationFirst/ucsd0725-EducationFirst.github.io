@@ -18,15 +18,24 @@
 		<div id="app" class="container">
 			<!-- Chat Box and Cards -->
 			<div class="row">
-				<div class="chatbox-box col s12 m12 l4">
-					<div id="chatBox"></div>
-					<hr>
-					<form id="inputForm">
-						<input type="text" id="userInput">
-						<button type="submit" id="submit" class="btn blue white-text right">
-							<i class="tiny material-icons">send</i>
+				<div class="col s12 m12 l4">
+					<div class="chatbox-box col s12">
+						<div id="chatBox"></div>
+						<p id="chatThinking" class="grey-text">Chatbot is thinking...</p>
+						<hr>
+						<form id="inputForm">
+							<input type="text" id="userInput">
+							<button type="submit" id="submit" class="btn blue white-text right">
+								<i class="tiny material-icons">send</i>
+							</button>
+						</form>
+					</div>
+					<div class="col s12 center-align">
+						<br>
+						<button type="button" id="reset-button" class="btn amber lighten-2 white-text">
+							Reset
 						</button>
-					</form>
+					</div>
 				</div>
 
 				<div class="col s12 m12 l8">
@@ -191,6 +200,15 @@ $(document).ready(function(){
 		cc.displaySchools(cc.schools);
 	});
 
+	$("#reset-button").click(function() {
+		$("#chatBox").empty();
+		$("#university-box").empty();
+		$(".chip").remove();
+		$("#search-settings").show();
+		cc.reset();
+		setTimeout(DisplayChatbotPrompt, 200);
+	});
+
 	$("#colophonLink").click(function() {
 		$("#colophon").modal("open");
 	});
@@ -198,6 +216,7 @@ $(document).ready(function(){
 	var chatbox = $("#chatBox");
 
 	function DisplayChatbotPrompt(prompts) {
+		$("#chatThinking").html("&nbsp;");
 		var prompt = prompts || cc.GetNextPrompt();
 		prompt.forEach(function(p) {
 			var bubble = $("<div class='bubble bot green lighten-3'>");
@@ -219,6 +238,7 @@ $(document).ready(function(){
 		var bubble = $("<div class='bubble user indigo lighten-4'>");
 		bubble.html(input);
 		chatbox.append(bubble);
+		$("#chatThinking").text("Chatbot is thinking...");
 		chatbox[0].scrollTop = chatbox[0].scrollHeight;
 
 		// Query wit.ai
