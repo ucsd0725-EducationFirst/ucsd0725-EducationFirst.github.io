@@ -66,6 +66,7 @@ var ChatController = function(chatbot) {
 	};
 
 	this.getSchools = function() {
+		$("#loadingSpinner").show();
 		if (self.context.where) {
 			if (self.context.what) {
 				new ScorecardQuery()
@@ -86,6 +87,7 @@ var ChatController = function(chatbot) {
 				// TODO show jobs
 				$("#university-box").empty();
 				self.schools = [];
+				$("#loadingSpinner").hide();
 			}
 		}
 	}
@@ -278,6 +280,7 @@ var ChatController = function(chatbot) {
 	};
 
 	this.displaySchools = function(schools) {
+		$("#loadingSpinner").hide();
 		$("#university-box").empty();
 		if (schools !== undefined) {
 			self.averages = CalculateAverages(schools);

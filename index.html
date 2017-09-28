@@ -44,6 +44,15 @@
 							</ul>
 						</div>
 					</div>
+					<div class="row center-align" id="loadingSpinner">
+						<div class="preloader-wrapper active">
+							<div class="spinner-layer spinner-red-only">
+								<div class="circle-clipper left"><div class="circle"></div></div>
+								<div class="gap-patch"><div class="circle"></div></div>
+								<div class="circle-clipper right"><div class="circle"></div></div>
+							</div>
+						</div>
+					</div>
 					<div id="university-box"></div>
 				</div>
 			</div>
@@ -116,9 +125,8 @@ var cc = new ChatController(bot);
 
 $(document).ready(function(){
 	$('.modal').modal();
-	$(".dropdown-button").dropdown({
-		belowOrigin: true
-	})
+	$(".dropdown-button").dropdown({ belowOrigin: true });
+	$("#loadingSpinner").hide();
 
 	$(document).on("click", ".uni-card", function() {
 		if ($(this).data("state") === "closed") {
