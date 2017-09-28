@@ -7,6 +7,7 @@ var ChatController = function(chatbot) {
 	this.state = "root";
 	this.requestClarification = false;
 	this.sortBy = "salary";
+	this.promptQueue = [];
 
 	this.reset = function() {
 		this.currentPath = ["root"];
@@ -14,6 +15,7 @@ var ChatController = function(chatbot) {
 		this.state = "root";
 		this.requestClarification = false;
 		this.sortBy = "salary";
+		this.promptQueue = [];
 	};
 
 	this.tree = {
@@ -72,6 +74,12 @@ var ChatController = function(chatbot) {
 	};
 
 	this.GetNextPrompt = function() {
+		if (self.promptQueue.length > 0) {
+			queue = self.promptQueue;
+			self.promptQueue = [];
+			return queue;
+		}
+
 		if (self.requestClarification) {
 			self.requestClarification = false;
 			var clarification = ["I'm sorry, I don't understand."];
@@ -112,6 +120,13 @@ var ChatController = function(chatbot) {
 
 	this.HandleInput = function(input, callback) {
 		self.chatbot.ParseInput(input, function(intents) {
+			console.log(intents);
+			if (intents === undefined) { self.requestClarification = true; callback(); return; }
+			if (intents.kind === "greeting") {
+				self.promptQueue.push("Hello!");
+				callback();
+				return;
+			}
 			self.Consume(intents);
 			callback();
 		});
@@ -122,43 +137,49 @@ var ChatController = function(chatbot) {
 		var close = $("<i class='close material-icons'>").text("close");
 		close.addClass("context-" + data);
 		tag.append(close);
-		$("#tag-box").find(".context-" + data).remove();
+		$("#tag-box").find(".context-" + data).parent().remove();
 		$("#tag-box").append(tag);
 	}
 
+	this.lookForLocation = function(intents) {
+		function foundState(abbr) {
+			self.context["where"] = abbr;
+			self.currentPath = ["root", "where"];
+			self.addTag(Capitalize(InverseUSStatesMap[abbr]), "where");
+			return true;
+		}
+		if (intents.value.length === 2) {
+			// State abbreviation?
+			var abbr = intents.value.toUpperCase();
+			if (InverseUSStatesMap[abbr] !== undefined) {
+				if (foundState(abbr)) {
+					return true;
+				}
+			} else {
+				// State not found
+				self.requestClarification = true;
+			}
+		} else {
+			// State name?
+			var abbr = USStatesMap[intents.value.toLowerCase()];
+			if (abbr !== undefined) {
+				if (foundState(abbr)) {
+					return true;
+				}
+			} else {
+				// State not found
+				self.requestClarification = true;
+			}
+		}
+	}
+
 	this.Consume = function(intents) {
-		console.log(intents);
-		if (intents === undefined) { self.requestClarification = true; return; }
+		console.log(self.state, self.currentPath);
 		switch (self.state) {
 			case "root":
 				if (intents.kind === "location") {
-					// Look for location
-					if (intents.value.length === 2) {
-						// State abbreviation?
-						var abbr = intents.value.toUpperCase();
-						if (InverseUSStatesMap[abbr] !== undefined) {
-							// Found state
-							self.context["where"] = abbr;
-							self.currentPath.push("where");
-							self.state = "where";
-							self.addTag(Capitalize(InverseUSStatesMap[self.context["where"]]), "where");
-						} else {
-							// State not found
-							self.requestClarification = true;
-						}
-					} else {
-						// State name?
-						var abbr = USStatesMap[intents.value.toLowerCase()];
-						if (abbr !== undefined) {
-							// Found state
-							self.context["where"] = abbr;
-							self.currentPath.push("where");
-							self.state = "where";
-							self.addTag(Capitalize(InverseUSStatesMap[self.context["where"]]), "where");
-						} else {
-							// State not found
-							self.requestClarification = true;
-						}
+					if (self.lookForLocation(intents)) {
+						self.state = "where";
 					}
 				} else if (intents.kind === "response") {
 					if (intents.value === "unsure" || intents.value === "indifferent") {
@@ -178,6 +199,7 @@ var ChatController = function(chatbot) {
 					self.context["what"] = intents.value;
 					self.currentPath.push("what");
 					self.state = "dunno.what";
+					self.addTag(self.context["what"], "what");
 				} else if (intents.kind === "response") {
 					if (intents.value === "unsure" || intents.value === "indifferent") {
 						// User unsure/indifferent what they want to study
@@ -208,7 +230,32 @@ var ChatController = function(chatbot) {
 				} else {
 					self.requestClarification = true;
 				}
+				break;
 			default:
+				var redisplayFlag = false;
+				if (intents.kind === "location") {
+					self.lookForLocation(intents);
+					redisplayFlag = true;
+				} else if (intents.kind === "industry") {
+					self.context["what"] = intents.value;
+					self.addTag(self.context["what"], "what");
+					redisplayFlag = true;
+				}
+				if (redisplayFlag && !self.requestClarification) {
+					if (self.context.where) {
+						if (self.context.what) {
+							self.currentPath = ["root", "where", "what"];
+						} else {
+							self.currentPath = ["root", "where", "dunno"];
+						}
+					} else {
+						if (self.context.what) {
+							self.currentPath = ["root", "where", "what"];
+						} else {
+							self.currentPath = ["root", "dunno", "dunno"];
+						}
+					}
+				}
 				break;
 		}
 	};

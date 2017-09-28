@@ -375,5 +375,10 @@ function CardForSchool(school, averages) {
 }
 
 function Capitalize(w) {
-	return w[0].toUpperCase() + w.slice(1);
+	var ws = w.split(" ");
+	for (var i = 0; i < ws.length; i++) {
+		var w = ws[i][0].toUpperCase() + ws[i].slice(1);
+		ws[i] = w;
+	}
+	return ws.join(" ");
 }

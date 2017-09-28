@@ -33,6 +33,11 @@ var ChatBot = function() {
                 var result = results[0];
                 result.kind = "location";
                 callback(result);
+            } else if (response.entities.greetings !== undefined) {
+                var results = response.entities.greetings.sort(self.byConfidence);
+                var result = results[0];
+                result.kind = "greeting";
+                callback(result);
             } else {
                 callback(undefined);
             }
