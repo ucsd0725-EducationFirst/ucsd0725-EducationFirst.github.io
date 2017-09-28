@@ -132,8 +132,14 @@ background: transparent;
 	cursor: pointer;
 }
 
+@media (max-width: 992px) {
+	.uni-card {
+		width: calc(100%);
+	}
+}
+
 .uni-card.card-open {
-	width: calc(100% - 20px);
+	width: calc(100%);
 	cursor: auto;
 }
 
