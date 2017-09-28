@@ -37,8 +37,10 @@
 						<div class="col s4 right-align">
 							<a href="#!" class="dropdown-button grey btn" data-activates="school-sorting">Sort By</a>
 							<ul id="school-sorting" class="dropdown-content">
-								<li><a href="#!" class="grey lighten-3">Salary</a></li>
-								<li><a href="#!" class="">Tuition</a></li>
+								<li><a href="#!" class="grey lighten-3" data-sortby="salary">Salary</a></li>
+								<li><a href="#!" data-sortby="tuition">Tuition</a></li>
+								<li><a href="#!" data-sortby="size-low">Size - Low</a></li>
+								<li><a href="#!" data-sortby="size-high">Size - High</a></li>
 							</ul>
 						</div>
 					</div>
@@ -146,6 +148,13 @@ $(document).ready(function(){
 	$(document).on("click", ".chip > .close", function() {
 		if ($(this).hasClass("context-where")) {
 			delete cc.context["where"];
+			cc.getSchools();
+			return;
+		}
+		if ($(this).hasClass("context-what")) {
+			delete cc.context["what"];
+			cc.getSchools();
+			return;
 		}
 	});
 
@@ -153,8 +162,7 @@ $(document).ready(function(){
 		var selectColor = "grey lighten-3";
 		$("#school-sorting > li > a").removeClass(selectColor);
 		$(this).addClass(selectColor);
-		console.log($(this).text().toLowerCase())
-		cc.sortBy = $(this).text().toLowerCase();
+		cc.sortBy = $(this).data("sortby");
 		cc.displaySchools(cc.schools);
 	});
 

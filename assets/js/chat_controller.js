@@ -8,6 +8,7 @@ var ChatController = function(chatbot) {
 	this.requestClarification = false;
 	this.sortBy = "salary";
 	this.promptQueue = [];
+	this.schools = [];
 
 	this.reset = function() {
 		this.currentPath = ["root"];
@@ -16,6 +17,7 @@ var ChatController = function(chatbot) {
 		this.requestClarification = false;
 		this.sortBy = "salary";
 		this.promptQueue = [];
+		this.schools = [];
 	};
 
 	this.tree = {
@@ -29,49 +31,64 @@ var ChatController = function(chatbot) {
 				dunno: {
 					dynamic: function() {
 						// TODO show hottest jobs data
-						return ["That's OK! Here are some suggestions for the top jobs and industries right now."];
+						return ["Here are some suggestions for the top jobs and industries right now."];
 					}
 				}
 			},
 			where: {
 				dynamic: function() {
 					var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
-					return ["OK, I will look for schools in " + state + ".", "Do you know what you want to study?"];
+					return ["I will look for schools in " + state + ".", "Do you know what you want to study?"];
 				},
 				what: {
 					dynamic: function() {
 						if (self.context["where"] !== undefined) {
-							new ScorecardQuery()
-							.withFields([self.context["what"]])
-							.inState(self.context["where"])
-							.get(self.displaySchools);
-
+							self.getSchools();
 							var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
 							var industry = IndustryNames[self.context["what"]];
-							return ["Great! I will look for schools in " + state + " that offer " + industry + "."];
+							return ["I will look for schools in " + state + " that offer " + industry + "."];
 						} else {
-							new ScorecardQuery()
-							.withFields([self.context["what"]])
-							.get(self.displaySchools);
-
+							self.getSchools();
 							var industry = IndustryNames[self.context["what"]];
-							return ["Great! Here are some of the top schools that offer degrees in " + industry + "."];
+							return ["Here are some of the top schools that offer degrees in " + industry + "."];
 						}
 					}
 				},
 				dunno: {
 					dynamic: function() {
-						new ScorecardQuery()
-						.inState(self.context["where"])
-						.get(self.displaySchools);
-
+						self.getSchools();
 						var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
-						return ["That's OK! Here are some of the top schools in " + state + "."];
+						return ["Here are some of the top schools in " + state + "."];
 					}
 				}
 			}
 		}
 	};
+
+	this.getSchools = function() {
+		if (self.context.where) {
+			if (self.context.what) {
+				new ScorecardQuery()
+				.withFields([self.context.what])
+				.inState(self.context.where)
+				.get(self.displaySchools);
+			} else {
+				new ScorecardQuery()
+				.inState(self.context.where)
+				.get(self.displaySchools);
+			}
+		} else {
+			if (self.context.what) {
+				new ScorecardQuery()
+				.withFields([self.context.what])
+				.get(self.displaySchools);
+			} else {
+				// TODO show jobs
+				$("#university-box").empty();
+				self.schools = [];
+			}
+		}
+	}
 
 	this.GetNextPrompt = function() {
 		if (self.promptQueue.length > 0) {
@@ -270,11 +287,27 @@ var ChatController = function(chatbot) {
 			self.schoolIndex += 6;
 		}
 
+		if (self.schools.length < 1) {
+			var message = $("<p>").text("It doesn't look like there are any schools that match those criteria.")
+			$("#university-box").append(message);
+			return;
+		}
+
 		console.log("sorting", self.sortBy);
 		switch (self.sortBy) {
 			case "tuition":
 				self.schools.sort(function(a, b) {
 					return a.tuition.in_state > b.tuition.in_state;
+				});
+				break;
+			case "size-low":
+				self.schools.sort(function(a, b) {
+					return a.demographics.size > b.demographics.size;
+				});
+				break;
+			case "size-high":
+				self.schools.sort(function(a, b) {
+					return a.demographics.size < b.demographics.size;
 				});
 				break;
 			default:
