@@ -26,7 +26,7 @@
 						<form id="inputForm">
 							<input type="text" id="userInput">
 							<button type="submit" id="submit" class="btn blue white-text right">
-								<i class="tiny material-icons">send</i>
+								<span>Send</span><i class="tiny material-icons right">send</i>
 							</button>
 						</form>
 					</div>
@@ -182,9 +182,7 @@ $(document).ready(function(){
 			delete cc.context["what"];
 			cc.getSchools();
 		}
-		console.log("closing")
 		setTimeout(function() {
-			console.log("majors")
 			if ($(".chip").length < 1) {
 				DisplayChatbotPrompt(["Here are some of the top majors right now."])
 				cc.showTopMajors();
@@ -214,7 +212,6 @@ $(document).ready(function(){
 	});
 
 	var chatbox = $("#chatBox");
-	cc.showTopMajors();
 
 	function DisplayChatbotPrompt(prompts) {
 		$("#chatThinking").html("&nbsp;");
