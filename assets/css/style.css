@@ -147,3 +147,11 @@ background: transparent;
 	max-width: 400px;
 	height: 400px;
 }
+
+img {
+	max-width: 100%;
+}
+
+.row .col.img-col {
+	min-height: 400px;
+}

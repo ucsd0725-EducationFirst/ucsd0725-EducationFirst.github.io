@@ -383,8 +383,10 @@ function CardForTopMajor(major) {
 	var nameWithUnderscores = major.Name.split(" ").join("_");
 
 	var statsRow = $("<div class='row'>").appendTo(cardContent);
-	var salaryCol = $("<div class='col s6'>").appendTo(statsRow);
-	var employCol = $("<div class='col s6'>").appendTo(statsRow);
+	var imgCol = $("<div class='col s12 m6 right img-col'>").appendTo(statsRow);
+	var majorImage = $("<img>").attr({src: major.Image}).appendTo(imgCol);
+	var salaryCol = $("<div class='col s12 m6'>").appendTo(statsRow);
+	var employCol = $("<div class='col s12 m6'>").appendTo(statsRow);
 
 	$("<span class='card-title'>").text("Starting Salary").appendTo(salaryCol);
 	var salaryChartID = "salary-chart-" + nameWithUnderscores;
