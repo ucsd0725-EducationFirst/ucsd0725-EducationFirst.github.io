@@ -221,7 +221,7 @@ var ChatController = function(chatbot) {
 		}
 		if (count < self.schools.length) {
 			var row = $("<div class='row center-align'>");
-			var showMore = $("<a href='#!' class='btn-flat waves-effect waves-grey btn-flat'>").text("Show More");
+			var showMore = $("<button type='button' class='btn-flat waves-effect waves-grey btn-flat'>").text("Show More");
 			showMore.click(function() {
 				self.displaySchools();
 			});
