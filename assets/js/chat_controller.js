@@ -6,12 +6,14 @@ var ChatController = function(chatbot) {
 	this.context = {};
 	this.state = "root";
 	this.requestClarification = false;
+	this.sortBy = "salary";
 
 	this.reset = function() {
 		this.currentPath = ["root"];
 		this.context = {};
 		this.state = "root";
 		this.requestClarification = false;
+		this.sortBy = "salary";
 	};
 
 	this.tree = {
@@ -40,7 +42,6 @@ var ChatController = function(chatbot) {
 							new ScorecardQuery()
 							.withFields([self.context["what"]])
 							.inState(self.context["where"])
-							.orderedBy("salary_s_50")
 							.get(self.displaySchools);
 
 							var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
@@ -49,7 +50,6 @@ var ChatController = function(chatbot) {
 						} else {
 							new ScorecardQuery()
 							.withFields([self.context["what"]])
-							.orderedBy("salary_s_50")
 							.get(self.displaySchools);
 
 							var industry = IndustryNames[self.context["what"]];
@@ -61,7 +61,6 @@ var ChatController = function(chatbot) {
 					dynamic: function() {
 						new ScorecardQuery()
 						.inState(self.context["where"])
-						.orderedBy("salary_s_50")
 						.get(self.displaySchools);
 
 						var state = Capitalize(InverseUSStatesMap[self.context["where"]]);
@@ -76,7 +75,6 @@ var ChatController = function(chatbot) {
 		if (self.requestClarification) {
 			self.requestClarification = false;
 			var clarification = ["I'm sorry, I don't understand."];
-			console.log(self.state);
 			switch (self.state) {
 				case "root":
 					clarification.push("Please enter a US state name or abbreviation to search for colleges.");
@@ -119,6 +117,15 @@ var ChatController = function(chatbot) {
 		});
 	}
 
+	this.addTag = function(tagText, data) {
+		var tag = $("<div class='chip'>").html(tagText);
+		var close = $("<i class='close material-icons'>").text("close");
+		close.addClass("context-" + data);
+		tag.append(close);
+		$("#tag-box").find(".context-" + data).remove();
+		$("#tag-box").append(tag);
+	}
+
 	this.Consume = function(intents) {
 		console.log(intents);
 		if (intents === undefined) { self.requestClarification = true; return; }
@@ -134,6 +141,7 @@ var ChatController = function(chatbot) {
 							self.context["where"] = abbr;
 							self.currentPath.push("where");
 							self.state = "where";
+							self.addTag(Capitalize(InverseUSStatesMap[self.context["where"]]), "where");
 						} else {
 							// State not found
 							self.requestClarification = true;
@@ -146,6 +154,7 @@ var ChatController = function(chatbot) {
 							self.context["where"] = abbr;
 							self.currentPath.push("where");
 							self.state = "where";
+							self.addTag(Capitalize(InverseUSStatesMap[self.context["where"]]), "where");
 						} else {
 							// State not found
 							self.requestClarification = true;
@@ -187,6 +196,7 @@ var ChatController = function(chatbot) {
 					self.context["what"] = intents.value;
 					self.currentPath.push("what");
 					self.state = "where.what";
+					self.addTag(self.context["what"], "what");
 				} else if (intents.kind === "response") {
 					if (intents.value === "unsure" || intents.value === "indifferent" || intents.value === "negative") {
 						// User unsure/indifferent what they want to study
@@ -204,13 +214,26 @@ var ChatController = function(chatbot) {
 	};
 
 	this.displaySchools = function(schools) {
+		$("#university-box").empty();
 		if (schools !== undefined) {
 			self.averages = CalculateAverages(schools);
 			self.schools = schools;
 			self.schoolIndex = 6;
 		} else {
 			self.schoolIndex += 6;
-			$("#university-box").empty();
+		}
+
+		console.log("sorting", self.sortBy);
+		switch (self.sortBy) {
+			case "tuition":
+				self.schools.sort(function(a, b) {
+					return a.tuition.in_state > b.tuition.in_state;
+				});
+				break;
+			default:
+				self.schools.sort(function(a, b) {
+					return a.salary.starting["50"] < b.salary.starting["50"];
+				});
 		}
 
 		var count = Math.min(self.schoolIndex, self.schools.length);

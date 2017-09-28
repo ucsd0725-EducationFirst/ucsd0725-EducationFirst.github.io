@@ -30,6 +30,18 @@
 				</div>
 
 				<div class="col s12 m12 l8">
+					<div id="search-settings" class="row">
+						<div id="tag-box" class="col s8">
+							<span>Search Terms: </span>
+						</div>
+						<div class="col s4 right-align">
+							<a href="#!" class="dropdown-button grey btn" data-activates="school-sorting">Sort By</a>
+							<ul id="school-sorting" class="dropdown-content">
+								<li><a href="#!" class="grey lighten-3">Salary</a></li>
+								<li><a href="#!" class="">Tuition</a></li>
+							</ul>
+						</div>
+					</div>
 					<div id="university-box"></div>
 				</div>
 			</div>
@@ -96,8 +108,15 @@
 <script src="assets/js/scorecard_api.js" charset="utf-8"></script>
 
 <script type="text/javascript">
+
+var bot = new ChatBot();
+var cc = new ChatController(bot);
+
 $(document).ready(function(){
 	$('.modal').modal();
+	$(".dropdown-button").dropdown({
+		belowOrigin: true
+	})
 
 	$(document).on("click", ".uni-card", function() {
 		if ($(this).data("state") === "closed") {
@@ -124,12 +143,24 @@ $(document).ready(function(){
 		}
 	});
 
+	$(document).on("click", ".chip > .close", function() {
+		if ($(this).hasClass("context-where")) {
+			delete cc.context["where"];
+		}
+	});
+
+	$(document).on("click", "#school-sorting > li > a", function() {
+		var selectColor = "grey lighten-3";
+		$("#school-sorting > li > a").removeClass(selectColor);
+		$(this).addClass(selectColor);
+		console.log($(this).text().toLowerCase())
+		cc.sortBy = $(this).text().toLowerCase();
+		cc.displaySchools(cc.schools);
+	});
+
 	$("#colophonLink").click(function() {
 		$("#colophon").modal("open");
 	});
-
-	var bot = new ChatBot();
-	var cc = new ChatController(bot);
 
 	var chatbox = $("#chatBox");
 
