@@ -30,7 +30,8 @@ function CardForSchool(school, averages) {
 		$("<p>").text(fPerc + "% Female | " + mPerc + "% Male").appendTo(statsCol);
 	}
 	var withPluses = school.name.split(" ").join("+");
-	$.get("https://api.duckduckgo.com/?q=" + withPluses + "&format=json").done(function(json) {
+	$.get("https://api.duckduckgo.com/?q=" + withPluses + "&format=json")
+	.done(function(json) {
 		try {
 			json = JSON.parse(json);
 			if (json.Image !== undefined && json.Image !== null) {
@@ -39,6 +40,9 @@ function CardForSchool(school, averages) {
 		} catch (err) {
 			console.log(err);
 		}
+	})
+	.fail(function(err) {
+		console.log(err);
 	});
 
 	$("<h5>").text("Admissions").appendTo(schoolInfo);
