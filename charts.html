@@ -95,8 +95,66 @@
 				}
 			});
 
-			$("<h5>").text("Admissions").appendTo(schoolInfo);
-			$("<p>").text("TODO: Add test scores").appendTo(schoolInfo);
+			var admissionsRow = $("<div class='row'>").appendTo(schoolInfo);
+			var admissionsCol = $("<div class='col s12 m6'>").appendTo(admissionsRow);
+			$("<h5>").text("Admissions").appendTo(admissionsCol);
+			if (school.school.admissions.sat.avg > 0) {
+				$("<p>").html("Average SAT Combined Score: " + school.school.admissions.sat.avg + "<br><br>").appendTo(admissionsCol);
+			} else {
+				$("<p>").html("SAT Data Unavailable<br><br>").appendTo(admissionsCol);
+			}
+			if (school.school.admissions.act.composite["25"] > 0) {
+				var chartID = "act-" + school.key;
+				var actChart = $("<canvas class='card-chart'>").attr({id: chartID}).appendTo(admissionsCol);
+				var ctx = actChart[0].getContext("2d");
+				new Chart(ctx, {
+					type: 'bar',
+					data: {
+						labels: ["25", "50", "75"],
+						datasets: [{
+							data: [
+								school.school.admissions.act.composite["25"],
+								school.school.admissions.act.composite["50"],
+								school.school.admissions.act.composite["75"]
+							],
+							backgroundColor: [
+								'rgba(66, 134, 244, 0.5)',
+								'rgba(49, 99, 180, 0.5)',
+								'rgba(32, 64, 116, 0.5)'
+							],
+							borderColor: [
+								'rgba(54, 162, 235, 1)',
+								'rgba(54, 162, 235, 1)',
+								'rgba(54, 162, 235, 1)'
+							],
+							borderWidth: 1.5
+						}]
+					},
+					options: {
+						legend: false,
+						scales: {
+							yAxes: [{
+								scaleLabel: {
+									display: true,
+									labelString: "ACT Score"
+								},
+								ticks: {
+									min: 0,
+									max: 36
+								}
+							}],
+							xAxes: [{
+								scaleLabel: {
+									display: true,
+									labelString: "Percentile"
+								}
+							}]
+						}
+					}
+				});
+			} else {
+				$("<p>").html("ACT Data Unavailable").appendTo(admissionsCol);
+			}
 
 			var moneyRow = $("<div class='row'>").appendTo(schoolInfo);
 			var tuitionCol = $("<div class='col s12 m6'>").appendTo(moneyRow);
@@ -252,7 +310,7 @@
 							'rgba(45, 43, 45,0.8)',
 							'rgba(45, 43, 45,0.8)',
 							'rgba(45, 43, 45,0.8)'
-							
+
 						],
 						borderWidth: 1.6
 					}]
