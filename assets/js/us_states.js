@@ -48,7 +48,8 @@ var USStatesMap = {
 	"washington": "WA",
 	"west virginia": "WV",
 	"wisconsin": "WI",
-	"wyoming": "WY"
+	"wyoming": "WY",
+	"puerto rico": "PR"
 };
 
 var InverseUSStatesMap = {
@@ -101,5 +102,6 @@ var InverseUSStatesMap = {
 	"WA": "washington",
 	"WV": "west virginia",
 	"WI": "wisconsin",
-	"WY": "wyoming"
+	"WY": "wyoming",
+	"PR": "puerto rico"
 };

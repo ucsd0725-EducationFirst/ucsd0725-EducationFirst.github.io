@@ -65,6 +65,9 @@ var ChatController = function(chatbot) {
 	};
 
 	this.getSchools = function() {
+		if (self.context.what === "business") { self.context.what = "business_marketing"; }
+		if (self.context.what === "comm_tech") { self.context.what = "communications_technology"; }
+		if (self.context.what === "foreign_language") { self.context.what = "language"; }
 		$("#loadingSpinner").show();
 		if (self.context.where) {
 			if (self.context.what) {
