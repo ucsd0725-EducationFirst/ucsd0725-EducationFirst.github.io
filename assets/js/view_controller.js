@@ -46,7 +46,7 @@ function CardForSchool(school, averages) {
 	});
 
 	var admissionsRow = $("<div class='row'>").appendTo(schoolInfo);
-	var admissionsCol = $("<div class='col s12 m6'>").appendTo(admissionsRow);
+	var admissionsCol = $("<div class='col s12 m12 l6'>").appendTo(admissionsRow);
 	$("<h5>").text("Admissions").appendTo(admissionsCol);
 	if (school.admissions.sat.avg > 0) {
 		$("<p>").html("Average SAT Combined Score: " + school.admissions.sat.avg + "<br><br>").appendTo(admissionsCol);
@@ -107,8 +107,8 @@ function CardForSchool(school, averages) {
 	}
 
 	var moneyRow = $("<div class='row'>").appendTo(schoolInfo);
-	var tuitionCol = $("<div class='col s12 m6'>").appendTo(moneyRow);
-	var repaymentCol = $("<div class='col s12 m6'>").appendTo(moneyRow);
+	var tuitionCol = $("<div class='col s12 m12 l6'>").appendTo(moneyRow);
+	var repaymentCol = $("<div class='col s12 m12 l6'>").appendTo(moneyRow);
 
 	$("<h5>").text("Tuition").appendTo(tuitionCol);
 	if (school.tuition.pell_grant_rate > 0) {
@@ -231,8 +231,8 @@ function CardForSchool(school, averages) {
 
 	$("<h5>").text("Salaries").appendTo(schoolInfo);
 	var salaryRow = $("<div class='row'>").appendTo(schoolInfo);
-	var startingCol = $("<div class='col s12 m6'>").appendTo(salaryRow);
-	var eventualCol = $("<div class='col s12 m6'>").appendTo(salaryRow);
+	var startingCol = $("<div class='col s12 m12 l6'>").appendTo(salaryRow);
+	var eventualCol = $("<div class='col s12 m12 l6'>").appendTo(salaryRow);
 	if (school.salary.starting["10"] > 0) {
 		$("<p>").html("Starting Salary<br><br>").appendTo(startingCol);
 		var chartID = "salary-s-" + school.key;
