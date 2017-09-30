@@ -309,23 +309,23 @@ var ChatController = function(chatbot) {
 		console.log("sorting", self.sortBy);
 		switch (self.sortBy) {
 			case "tuition":
-				self.schools.sort(function(a, b) {
-					return a.tuition.in_state > b.tuition.in_state;
+				self.schools = self.schools.sort(function(a, b) {
+					return a.tuition.in_state - b.tuition.in_state;
 				});
 				break;
 			case "size-low":
-				self.schools.sort(function(a, b) {
-					return a.demographics.size > b.demographics.size;
+				self.schools = self.schools.sort(function(a, b) {
+					return a.demographics.size - b.demographics.size;
 				});
 				break;
 			case "size-high":
-				self.schools.sort(function(a, b) {
-					return a.demographics.size < b.demographics.size;
+				self.schools = self.schools.sort(function(a, b) {
+					return b.demographics.size - a.demographics.size;
 				});
 				break;
 			default:
-				self.schools.sort(function(a, b) {
-					return a.salary.starting["50"] < b.salary.starting["50"];
+				self.schools = self.schools.sort(function(a, b) {
+					return b.salary.starting["50"] - a.salary.starting["50"];
 				});
 		}
 
